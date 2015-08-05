@@ -1,0 +1,25 @@
+# Site settings
+title: Invisible Blocks
+description: > # this means to ignore newlines until "baseurl:"
+  I make <a href='http://wordcram.org'>WordCram</a>,
+  and try to make generative art in <a href='http://processing.org'>Processing</a>.
+  I read a fair bit, and I try to write well.
+  I co-organize <a href='http://newhaven.io'>NewHaven.IO</a> and
+  <a href='http://newhavenrb.org'>NewHaven.rb</a>.
+  This is my blog.
+baseurl: /invisibleblocks
+url: "http://invisibleblocks.com" # the base hostname & protocol for your site
+permalink: /:year/:i_month/:i_day/:title/
+twitter_username: danbernier
+github_username:  danbernier
+
+# Build settings
+highlighter: pygments
+markdown: kramdown
+kramdown:
+  auto_ids: true
+  footnote_nr: 1
+  entity_output: as_char
+  toc_levels: 1..6
+  use_coderay: true
+  input: GFM
