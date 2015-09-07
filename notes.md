@@ -27,8 +27,8 @@
 
 - [ ] try a color scheme: egg yolk, avocado, and spinach
 - [ ] get better fonts
-- [ ] put back into the footer: 'for building invisible machines'
-- [ ] fix up the ABOOT page
+- [x] put back into the footer: 'for building invisible machines'
+- [x] fix up the ABOOT page
 
 
 
