@@ -25,8 +25,8 @@
     </wp:commentmeta>
 
 
-- [ ] try a color scheme: egg yolk, avocado, and spinach
-- [ ] get better fonts
+- [x] try a color scheme: egg yolk, avocado, and spinach.  http://www.colourlovers.com/
+- [x] get better fonts
 - [x] put back into the footer: 'for building invisible machines'
 - [x] fix up the ABOOT page
 
@@ -36,3 +36,10 @@
 
 - [x] deal w/ untitled drafts: "Untitled Draft 1", etc
 - [x] add comments
+
+
+
+
+# Fonts
+
+Aller: not a good text font, but ok for headers. Aller *Lgiht* is nice for body text...

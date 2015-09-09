@@ -6,7 +6,7 @@
 
 
 // Our variables
-$base-font-family: Helvetica, Arial, sans-serif;
+$base-font-family: 'aller_lightregular', Helvetica, Arial, sans-serif;
 $base-font-size:   16px;
 $small-font-size:  $base-font-size * 0.875;
 $base-line-height: 1.5;
@@ -15,7 +15,15 @@ $spacing-unit:     30px;
 
 $text-color:       #111;
 $background-color: #fdfdfd;
-$brand-color:      #2a7ae2;
+//$brand-color:      #91B14E;  // avocado
+//$brand-color:     #4D9800;  // light spinach
+$brand-color:      #FF4B27;  // tomato
+$brand-color-dark: darken($brand-color, 25%);
+$brand-color-light: desaturate(lighten($brand-color, 40%), 30%);
+
+//$accent-color: #FFB601;  // egg yolk
+$accent-color: #6FC949; //#46B219;  // light green, ALMOST avocado-y
+$accent-color-dark: darken($accent-color, 25%);
 
 $grey-color:       #828282;
 $grey-color-light: lighten($grey-color, 40%);
@@ -45,6 +53,7 @@ $on-laptop:        800px;
 @import
         "base",
         "layout",
+        "fonts",
         "syntax-highlighting"
 ;
 
