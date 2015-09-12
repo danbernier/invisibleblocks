@@ -7,8 +7,6 @@ description: > # this means to ignore newlines until "baseurl:"
   I co-organize <a href='http://newhaven.io'>NewHaven.IO</a> and
   <a href='http://newhavenrb.org'>NewHaven.rb</a>.
   This is my blog.
-baseurl: /invisibleblocks
-url: "http://invisibleblocks.com" # the base hostname & protocol for your site
 permalink: /:year/:i_month/:i_day/:title/
 twitter_username: danbernier
 github_username:  danbernier
