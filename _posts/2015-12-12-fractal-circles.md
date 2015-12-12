@@ -93,7 +93,7 @@ function setup() {
 };
 
 function draw() {
-  pStopRecursing = norm(minute(), 0, 59); //0.35;
+  pStopRecursing = norm(minute(), 59, 0); //0.35;
   pDrawACircle = norm(second(), 0, 59); // 0.15;
 
   background(255);
@@ -103,7 +103,7 @@ function draw() {
   textAlign(CENTER);
   text("Current time: " + nf(hour(), 2) + ":" + nf(minute(), 2) + ":" + nf(second(), 2), width/2, height-60);
   text("Chance of drawing: " + second() + "/60 = " + nf(pDrawACircle, 1, 3), width/2, height-40);
-  text("Chance of recursing: " + minute() + "/60 = " + nf(pStopRecursing, 1, 3), width/2, height-20);
+  text("Chance of recursing: " + minute() + "/60 = " + nf((1-pStopRecursing), 1, 3), width/2, height-20);
 };
 
 var pickACircle = (function() {
