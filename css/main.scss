@@ -6,10 +6,12 @@
 
 
 // Our variables
-$base-font-family: 'aller_lightregular', Helvetica, Arial, sans-serif;
+$base-font-family: 'Noto Serif', 'aller_lightregular', Helvetica, Arial, sans-serif;
 $base-font-size:   16px;
 $small-font-size:  $base-font-size * 0.875;
 $base-line-height: 1.5;
+
+$heading-font-family: 'PT Sans', 'Museo Sans', 'Gandhi Sans Bold', 'Fira Sans SemiBold', 'bevanregular';
 
 $spacing-unit:     30px;
 
@@ -17,11 +19,14 @@ $text-color:       #111;
 $background-color: #fdfdfd;
 //$brand-color:      #91B14E;  // avocado
 //$brand-color:     #4D9800;  // light spinach
-$brand-color:      #FF4B27;  // tomato
+//$brand-color:      #FF4B27;  // tomato
+//$brand-color:  #2C677A;
+$brand-color:      #71916E;
 $brand-color-dark: darken($brand-color, 25%);
 $brand-color-light: desaturate(lighten($brand-color, 40%), 30%);
 
 //$accent-color: #FFB601;  // egg yolk
+//$accent-color: #F7C3C3; 
 $accent-color: #6FC949; //#46B219;  // light green, ALMOST avocado-y
 $accent-color-dark: darken($accent-color, 25%);
 
@@ -57,6 +62,10 @@ $on-laptop:        800px;
         "syntax-highlighting"
 ;
 
+
+.site-title {
+  font-family: $heading-font-family;
+}
 
 
 .comment {
