@@ -65,19 +65,22 @@ new p5(function(p) {
 });
 </script>
 
-It's hard, isn't it? Maybe you can make it still - I can't seem to - but it's hard to find the right spot.
+It's hard, isn't it? Even if you're dextrous enough to make it still - I don't seem to be - it's hard to find the right spot.
 
-That's a [p5.js](http://p5js.org) sketch. Here's its `draw` function (simplified):
+That's a [p5.js](http://p5js.org) sketch. Here's a simplified version of its `draw` function:
 
 {% highlight javascript linenos %}
 function draw() {
   background(255);
 
+  // mouseX is some way between 0 and width.
+  // Find the number that's the same distance between -1 and 1.
   var spinSpeed = map(mouseX, 0, width, -1, 1);
+
   angle += spinSpeed;
 
   push();
-  translate(width/2, height/2);
+  translate(width/2, height/2); // Move our origin point to the center
   rotate(angle);
 
   rect(0, 0, 100, 100);
@@ -85,9 +88,9 @@ function draw() {
 };
 {% endhighlight %}
 
-Notice line four: it uses the [map](http://p5js.org/reference/#/p5/map) function to linearly map the mouse position to the spin speed.
+Notice line six: it uses the [map](http://p5js.org/reference/#/p5/map) function to linearly map the mouse position to the spin speed.
 
-Every millimeter yor mouse moves changes the spinning speed by the same amount. Every point sets the spin speed, and the "zero-speed" point is really small. If we overlaid a graph of the spin speeds, it might look like this:
+Every millimeter your mouse moves changes the spinning speed by the same amount. Every point translates to a certain spin speed, and the "zero-speed" spot is really small. If we overlaid a graph of the spin speeds, it might look like this:
 
 <p id='linear-with-graph' class='box-shadow'></p>
 <script>
@@ -124,7 +127,7 @@ new p5(function(p) {
 });
 </script>
 
-The problem is that middle point is too hard to hit. It's a common problem in UIs, and often, you fix it by making the important region easier to hit.  
+It's hard to stop the spinning because that middle spot is hard to hit. It would be easier if the spot was bigger.
 
 In this case, as the mouse moves through the middle, it should change the speed less - the speed should be more sensitive to changes in the middle (or is it "less sensitive"?). We can still cover the same range of speeds, and make up for it by squishing the ends, where tiny changes are less noticeable.[^homunculus]
 
@@ -170,13 +173,17 @@ new p5(function(p) {
 });
 </script>
 
-The math for this is actually pretty simple. It uses two useful tricks.
+The math for this is actually pretty simple. It combines two useful tricks.
 
-**First trick:** _The set of real numbers between 0 and 1 are closed under multiplication._ If you multiply any number between 0 and 1 with another number between 0 and 1, you'll always get another number between 0 and 1. 1 &#215; 0.5 = 0.5.[^percent]
+**The First Trick:** _The set of real numbers between 0 and 1 are closed under multiplication._ If you multiply any number between 0 and 1 by any other number between 0 and 1, you'll always get a number between 0 and 1. 1 &#215; 0.5 = 0.5.[^percent]
 
-[^percent]: If you do the same equation with percentages, it works out wrong: 100% &#215; 50% should equal 50%, but 100 &#215; 50 = 5000. Remember, percentages are really ratios waiting to get down to 0..1: fifty _per-cent_ is fifty per hundred, or 50/100
+[^percent]: If you do the same equation with percentages, it works out wrong: 100% &#215; 50% should equal 50%, but 100 &#215; 50 = 5000. Remember, percentages are really ratios waiting to get down to 0..1: fifty _per-cent_ is fifty per hundred, or 50/100.
 
-And you can think of 1 as "whole:" multiply any number by 1, and you'll get all of it back. Any other number between 0 and 1 will give you back _less_ of something. If your spin speed is a number between 0 and 1, and you multiply it by 1, you'll stay at the same speed; multiply it by 0.9, you'll slow down a little; multiply it by 0.1, you'll slow down a lot.
+This makes me think of 1 as "whole:" multiply any number by 1, and you'll get all of it back. Any other number between 0 and 1 will give you back _less_ of something. If your spin speed is a number between 0 and 1, and you multiply it by 1, you'll stay at the same speed; multiply it by 0.9, you'll slow down a little; multiply it by 0.1, you'll slow down a lot. 
+
+Intuitively, multiplying something by a number between 0 and 1 drags it down, dampens it, flattens it. Erodes it.
+
+If you _multiply it by itself_, it'll 
 
 If your spin speed is < 1, and you _multiply it by itself_, it'll slow down. The closer it is to zero, the less it'll slow down.
 
@@ -187,9 +194,9 @@ var spinSpeed = map(mouseX, 0, width, -1, 1);
 angle += spinSpeed;
 {% endhighlight %}
 
-But our `spinSpeed` ranges from _negative one_ to one, and multiplying negative numbers makes them positive. That would mean the square would always spin in the same direction!
+But our `spinSpeed` ranges from _negative one_ to one, and multiplying negative numbers makes them positive. That would make the square only spin in to the right. Fixing that involes the second trick.
 
-**Second trick:** _To square a number in the range -1..1, and preserve its sign, multiply it by its absolute value._ Obvious? Sure. But this is so useful, I think it's worth spelling out.
+**The Second Trick:** _To square a number in the range -1..1, and preserve its sign, multiply it by its absolute value._ Obvious? Sure. But this is so useful, I think it's worth spelling out.
 
 To multiply two numbers, and get a negative number, the numbers must have different signs.
 
