@@ -12,12 +12,11 @@ twitter_username: danbernier
 github_username:  danbernier
 
 # Build settings
-highlighter: pygments
+highlighter: rouge
 markdown: kramdown
 kramdown:
   auto_ids: true
   footnote_nr: 1
   entity_output: as_char
   toc_levels: 1..6
-  use_coderay: true
   input: GFM
