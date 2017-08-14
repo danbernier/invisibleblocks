@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Circle Pictures | </title>
+    <meta name="description" content="I make <a href='http://wordcram.org'>WordCram</a>, and try to make generative art in <a href='http://processing.org'>Processing</a>. I read a fair bit, and I try to write well. I co-organize <a href='http://newhaven.io'>NewHaven.IO</a> and <a href='http://newhavenrb.org'>NewHaven.rb</a>. This is my blog.
+">
+
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="canonical" href="/2013/12/17/circle-pictures/">
+
+    <script src="/javascript/main.js"></script>
+    <script src="/javascript/p5.min.js"></script>
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Invisible Blocks</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">What's all this, then?</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Circle Pictures</h1>
+    <p class="post-meta">Dec 17, 2013 • Dan Bernier</p>
+  </header>
+
+  <article class="post-content">
+    <p><img class="size-full" alt="Circle Pictures" src="/assets/2013/12/4-dark.png" /></p>
+
+<p>Take an image.</p>
+
+<p>Pick a random pixel. Over a plain background of the same size as the image, draw a circle over that spot: bigger if it’s lighter, smaller if it’s darker. (Or reverse it: big for dark, small for light.) Repeat, but don’t overlap the circles. After a while, you’ll run out of empty places for new circles, so stop.</p>
+
+<div class="gallery">
+  <img src="/assets/2013/12/1-dark.png" />
+  <img src="/assets/2013/12/1-light.png" />
+  <img src="/assets/2013/12/2-dark.png" />
+  <img src="/assets/2013/12/2-light.png" />
+  <img src="/assets/2013/12/3-dark.png" />
+  <img src="/assets/2013/12/3-light.png" />
+  <img src="/assets/2013/12/4-dark.png" />
+  <img src="/assets/2013/12/4-light.png" />
+</div>
+
+<p>I screwed up the math for checking circle overlaps. At first, I was thinking: pack the circles as tight as you can, so only call it an overlap when the distance between the circle centers is less than the sum of their radii.</p>
+
+<p><a href="/assets/2013/12/overlap.png"><img class="size-full wp-image-788 alignright" alt="overlapping circles" src="/assets/2013/12/overlap.png" width="330" height="260" /></a></p>
+
+<p>But then, from another part of my brain, I drew the circles at half-size, forgetting that Processing’s <code class="highlighter-rouge">ellipse</code> method takes width and height parameters, not a radius. So the circles were packed less densely, and I wasn’t clever enough to see why. I hacked it, and decided to count it as an overlap when the distance is bigger than the radius of the bigger circle. (Shrug. Hack.) It worked. And it looked cool.</p>
+
+<p>Eventually I figured out my bug, and fixed it, but then the circles were too dense, so I went back to the happy accident.</p>
+
+<p>I also tried color images. I think there’s potential here, but I like these less.</p>
+
+<div class="gallery">
+  <img src="/assets/2013/12/5-dark.png" />
+  <img src="/assets/2013/12/5-light.png" />
+  <img src="/assets/2013/12/6-dark.png" />
+  <img src="/assets/2013/12/6-light.png" />
+  <img src="/assets/2013/12/7-dark.png" />
+  <img src="/assets/2013/12/7-light.png" />
+</div>
+
+<p>The source images are images of Paul Erdős, Jorge Luis Borges (twice), Henri de Toulouse-Lautrec, two sunflowers, and a cow.</p>
+
+<div class="gallery">
+  <img src="/assets/2013/12/erdos.jpg" />
+  <img src="/assets/2013/12/borges1.jpg" />
+  <img src="/assets/2013/12/borges2.jpg" />
+  <img src="/assets/2013/12/lautrec.jpg" />
+  <img src="/assets/2013/12/sunflower.jpg" />
+  <img src="/assets/2013/12/sunflower2.jpg" />
+  <img src="/assets/2013/12/cow.png" />
+</div>
+
+<p>Here’s the source. (I tried putting it on openprocessing.org, which I normally really like, but I had troubles with the images in JavaScript mode, and they no longer support Java mode.)</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124</pre></td><td class="code"><pre><span class="n">PImage</span> <span class="n">image</span><span class="o">;</span>
+<span class="kt">boolean</span> <span class="n">dark</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+
+<span class="n">ArrayList</span> <span class="n">circles</span><span class="o">;</span>
+
+<span class="c1">// Trailing average. When the average number of tries</span>
+<span class="c1">// to place a circle is too high,</span>
+<span class="c1">// stop trying.</span>
+<span class="n">Averager</span> <span class="n">averager</span><span class="o">;</span>
+
+<span class="n">String</span> <span class="n">paul</span> <span class="o">=</span> <span class="s">"erdos.jpg"</span><span class="o">;</span>
+<span class="n">String</span> <span class="n">jorge1</span> <span class="o">=</span> <span class="s">"borges1.jpg"</span><span class="o">;</span>
+<span class="n">String</span> <span class="n">jorge2</span> <span class="o">=</span> <span class="s">"borges2.jpg"</span><span class="o">;</span>
+<span class="n">String</span> <span class="n">henri</span> <span class="o">=</span> <span class="s">"lautrec.jpg"</span><span class="o">;</span>
+<span class="n">String</span> <span class="n">sunflower</span> <span class="o">=</span> <span class="s">"sunflower.jpg"</span><span class="o">;</span>
+<span class="n">String</span> <span class="n">sunflower2</span> <span class="o">=</span> <span class="s">"sunflower2.jpg"</span><span class="o">;</span>
+<span class="n">String</span> <span class="n">cow</span> <span class="o">=</span> <span class="s">"cow.png"</span><span class="o">;</span>
+
+<span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="o">{</span>
+  <span class="n">image</span> <span class="o">=</span> <span class="n">loadImage</span><span class="o">(</span><span class="n">paul</span><span class="o">);</span>
+  <span class="n">image</span><span class="o">.</span><span class="na">resize</span><span class="o">(</span><span class="mi">600</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+  <span class="n">size</span><span class="o">(</span><span class="n">image</span><span class="o">.</span><span class="na">width</span><span class="o">,</span> <span class="n">image</span><span class="o">.</span><span class="na">height</span><span class="o">);</span>
+
+  <span class="n">ellipseMode</span><span class="o">(</span><span class="n">CENTER</span><span class="o">);</span>
+  <span class="n">noStroke</span><span class="o">();</span>
+  <span class="n">smooth</span><span class="o">();</span>
+
+  <span class="n">reset</span><span class="o">();</span>
+<span class="o">}</span>
+
+<span class="kt">void</span> <span class="nf">reset</span><span class="o">()</span> <span class="o">{</span>
+  <span class="n">circles</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">();</span>
+  <span class="n">averager</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Averager</span><span class="o">(</span><span class="mi">20</span><span class="o">);</span>
+  <span class="n">background</span><span class="o">(</span><span class="n">dark</span> <span class="o">?</span> <span class="mi">0</span> <span class="o">:</span> <span class="mi">255</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kt">void</span> <span class="nf">draw</span><span class="o">()</span> <span class="o">{</span>
+  <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+    <span class="n">drawRandomCircle</span><span class="o">();</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">averager</span><span class="o">.</span><span class="na">average</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="o">)</span> <span class="o">{</span>
+      <span class="c1">//save("7.dark.png");</span>
+      <span class="n">reset</span><span class="o">();</span>
+      <span class="k">break</span><span class="o">;</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kt">void</span> <span class="nf">drawRandomCircle</span><span class="o">()</span> <span class="o">{</span>
+  <span class="c1">//println(averager.average());</span>
+  <span class="n">Circle</span> <span class="n">circ</span><span class="o">;</span>
+  <span class="kt">int</span> <span class="n">tries</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+  <span class="k">do</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">floor</span><span class="o">(</span><span class="n">random</span><span class="o">(</span><span class="n">width</span><span class="o">));</span>
+    <span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="n">floor</span><span class="o">(</span><span class="n">random</span><span class="o">(</span><span class="n">height</span><span class="o">));</span>
+
+    <span class="n">color</span> <span class="n">c</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">);</span>
+    <span class="kt">float</span> <span class="n">val</span> <span class="o">=</span> <span class="n">brightness</span><span class="o">(</span><span class="n">c</span><span class="o">);</span>
+
+    <span class="n">tries</span><span class="o">++;</span>
+    <span class="kt">float</span> <span class="n">circleSize</span> <span class="o">=</span> <span class="n">dark</span> <span class="o">?</span>
+         <span class="n">map</span><span class="o">(</span><span class="n">val</span><span class="o">,</span> <span class="mi">255</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">60</span><span class="o">)</span> <span class="o">:</span>
+         <span class="n">map</span><span class="o">(</span><span class="n">val</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">255</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">60</span><span class="o">);</span>
+    <span class="n">circ</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Circle</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">,</span> <span class="n">c</span><span class="o">,</span> <span class="n">circleSize</span><span class="o">);</span>
+  <span class="o">}</span>
+  <span class="k">while</span> <span class="o">(</span><span class="n">overlaps</span> <span class="o">(</span><span class="n">circ</span><span class="o">));</span>
+
+  <span class="n">averager</span><span class="o">.</span><span class="na">record</span><span class="o">(</span><span class="n">tries</span><span class="o">);</span>
+
+  <span class="n">circles</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">circ</span><span class="o">);</span>
+  <span class="n">circ</span><span class="o">.</span><span class="na">draw</span><span class="o">();</span>
+<span class="o">}</span>
+
+<span class="kt">boolean</span> <span class="nf">overlaps</span><span class="o">(</span><span class="n">Circle</span> <span class="n">c</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">for</span> <span class="o">(</span><span class="n">Circle</span> <span class="n">other</span> <span class="o">:</span> <span class="n">circles</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">c</span><span class="o">.</span><span class="na">overlaps</span><span class="o">(</span><span class="n">other</span><span class="o">))</span> <span class="o">{</span>
+      <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+  <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">Circle</span> <span class="o">{</span>
+  <span class="kt">int</span> <span class="n">x</span><span class="o">;</span>
+  <span class="kt">int</span> <span class="n">y</span><span class="o">;</span>
+  <span class="n">color</span> <span class="n">c</span><span class="o">;</span>
+  <span class="kt">float</span> <span class="n">diameter</span><span class="o">;</span>
+
+  <span class="n">Circle</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">,</span> <span class="kt">int</span> <span class="n">y</span><span class="o">,</span> <span class="n">color</span> <span class="n">c</span><span class="o">,</span> <span class="kt">float</span> <span class="n">diameter</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">diameter</span> <span class="o">=</span> <span class="n">diameter</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kt">boolean</span> <span class="nf">overlaps</span><span class="o">(</span><span class="n">Circle</span> <span class="n">other</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nf">dist</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">,</span> <span class="n">other</span><span class="o">.</span><span class="na">x</span><span class="o">,</span> <span class="n">other</span><span class="o">.</span><span class="na">y</span><span class="o">)</span> <span class="o">&lt;</span> <span class="n">max</span><span class="o">(</span><span class="n">diameter</span><span class="o">,</span> <span class="n">other</span><span class="o">.</span><span class="na">diameter</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="kt">void</span> <span class="nf">draw</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">fill</span><span class="o">(</span><span class="n">c</span><span class="o">);</span>
+    <span class="n">ellipse</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">,</span> <span class="n">diameter</span><span class="o">,</span> <span class="n">diameter</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">Averager</span> <span class="o">{</span>
+  <span class="kt">float</span><span class="o">[]</span> <span class="n">values</span><span class="o">;</span>
+  <span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+  <span class="n">Averager</span><span class="o">(</span><span class="kt">int</span> <span class="n">length</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">float</span><span class="o">[</span><span class="n">length</span><span class="o">];</span>
+  <span class="o">}</span>
+
+  <span class="kt">void</span> <span class="nf">record</span><span class="o">(</span><span class="kt">float</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">values</span><span class="o">[</span><span class="n">index</span><span class="o">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">;</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="o">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span> <span class="o">%</span> <span class="n">values</span><span class="o">.</span><span class="na">length</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kt">float</span> <span class="nf">average</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kt">float</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">float</span> <span class="n">val</span> <span class="o">:</span> <span class="n">values</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">sum</span> <span class="o">+=</span> <span class="n">val</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">sum</span> <span class="o">/</span> <span class="n">values</span><span class="o">.</span><span class="na">length</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+
+  </article>
+
+  
+</div>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col  footer-col-1">
+        <h2 class="footer-heading">Invisible Blocks</h2>
+        <p class="text">for building invisible machines</p>
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/danbernier">
+              <span class="icon  icon--github">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/>
+                </svg>
+              </span>
+
+              <span class="username">danbernier</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/danbernier">
+              <span class="icon  icon--twitter">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809
+                  c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/>
+                </svg>
+              </span>
+
+              <span class="username">danbernier</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col  footer-col-3">
+        <p class="text">I make <a href='http://wordcram.org'>WordCram</a>, and try to make generative art in <a href='http://processing.org'>Processing</a>. I read a fair bit, and I try to write well. I co-organize <a href='http://newhaven.io'>NewHaven.IO</a> and <a href='http://newhavenrb.org'>NewHaven.rb</a>. This is my blog.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

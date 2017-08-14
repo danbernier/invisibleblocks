@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Chaos, Order, and Software Development | </title>
+    <meta name="description" content="I make <a href='http://wordcram.org'>WordCram</a>, and try to make generative art in <a href='http://processing.org'>Processing</a>. I read a fair bit, and I try to write well. I co-organize <a href='http://newhaven.io'>NewHaven.IO</a> and <a href='http://newhavenrb.org'>NewHaven.rb</a>. This is my blog.
+">
+
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="canonical" href="/2012/9/10/chaos-order-and-software-development/">
+
+    <script src="/javascript/main.js"></script>
+    <script src="/javascript/p5.min.js"></script>
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Invisible Blocks</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">What's all this, then?</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Chaos, Order, and Software Development</h1>
+    <p class="post-meta">Sep 10, 2012 • Dan Bernier</p>
+  </header>
+
+  <article class="post-content">
+    <p><a href="http://www.continuousthinking.com/">Zach Dennis</a> gave a very interesting, but not terribly well-received talk at RailsConf 2012, called “Sand Piles and Software.” (It’s on the <a href="http://railsconf2012.busyconf.com/schedule/full">schedule</a> on Tuesday in Salon J, if you want to check it out.) Here are the <a href="https://speakerdeck.com/u/zdennis/p/sand-piles-and-software-railsconf-2012">slides</a> (which are more suggestion than information), and here’s the synopsis:</p>
+
+<blockquote>
+  <p>This talk applies the concepts of chaos theory to software development using the <a href="http://www.thp.uni-duisburg.de/~sven/_publications/_pub_source/preprint_1997_03.pdf">Bak–Tang–Wiesenfeld sand pile model</a> [PDF link] as the vehicle for exploration. The sand pile model, which is used to show how a complex system is attracted to living on the edge of chaos, will be used as a both a powerful metaphor and analogy for building software. Software, it turns out, has its own natural attraction to living in its own edge of chaos. In this talk, we’ll explore what this means and entertain questions for what to do about it.</p>
+</blockquote>
+
+<p>The TL;DR of the talk was: as you build your software system, as you add features, you add complexity, and when it’s <em>too</em> complex, you won’t be able to add anything more, until you clean something up. So you clean a bit up, and add more complexity, until it falls over again. Like dropping grains of sand onto a sand pile, each grain is tiny, hardly worth noting, but one of them will cause a slide.</p>
+
+<p>That much rang very true with me.</p>
+
+<p>Zach’s advice, then, was to “fall in love with simplicity,” and “loathe unnecessary complication,” and there are some more slides about practices and values and refactoring, but I can’t remember the ideas for them; I’ll have to check my notes.</p>
+
+<p>To me, that part sounded virtuous.</p>
+
+<p>This morning, I turned again, for other reasons, to Dick Gabriel’s <a href="http://www.dreamsongs.com/MobSoftware.html">Mob Software: The Erotic Life of Code</a>. (I’ll say it until I stop meeting programmers who haven’t read him: <em>you are missing out.</em>) I got to the part where he talks about swarms (he’s preparing to introduce us to the Mob, the open-source hackers), and complexity emerging from local actors with simple rules, and this part reminded me of Zach Dennis’ talk:</p>
+
+<blockquote>
+  <p>Chaos is unpredictability: Combinations that might have lasting value or interest don’t last—the energy for change is too high. Order is total predictability: The only combinations that exist are the ones that always have—the energy for stability is too high.</p>
+</blockquote>
+
+<p>He goes on to quote Stuart Kauffman from “At Home in the Universe”:</p>
+
+<blockquote>
+  <p>It is a lovely hypothesis, with considerable supporting data, that genomic systems lie in the ordered regime near the phase transition to chaos. Were such systems too deeply into the frozen ordered regime, they would be too rigid to coordinate the complex sequences of genetic activities necessary for development. Were they too far into the gaseous chaotic regime, they would not be orderly enough.
+…cell networks achieve both stability and flexibility…by achieving a kind of poised state balanced on the edge of chaos.</p>
+</blockquote>
+
+<p>Is Zach telling us to stay where it’s safe and ordered? Are we stuck on this edge between chaos and order, if we want to write interesting software? I’d like my software to be both stable and flexible. If, to achieve this stability and flexibility, its behavior must be emergent, not guided by my brain, is that ok? Or is there a way for me to still specify requirements, and get this stability and flexibility? Is emergent-design only able to produce certain kinds of software?</p>
+
+<p><a href="/assets/2012/09/zach-slide-critical-point.png"><img class="aligncenter size-medium wp-image-620" title="One of Zach's slides: reaching your software's critical point" src="/assets/2012/09/zach-slide-critical-point.png" alt="One of Zach's slides: reaching your software's critical point" width="300" height="224" /></a></p>
+
+<p><em>Thanks to <a href="http://renprovey.com/">Ren</a> for reviewing this!</em></p>
+
+  </article>
+
+  
+
+  <a id='comments'></a>
+  <h3>1 Comments on "Chaos, Order, and Software Development"</h3>
+
+  
+  <div class='comment'>
+    <div><p>Hey Dan,</p>
+
+<p>Nice post. Reminds of the system we worked on, and the one I am “blessed with” now.</p>
+
+<p>Business types want us to build things as fast as possible. Well meaning developers who don’t know any better build systems that eventually become so rigid and fragile they can no longer provide business value effectively. Nobody was thinking about the big picture, just getting the feature out the door and getting the next client.</p>
+</div>
+
+    
+    <span class='author'>Dave Silveira</span>
+    
+
+    <span class='date'>Wed Sep 12 17:18:06 2012</span>
+  </div>
+  
+
+  
+</div>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col  footer-col-1">
+        <h2 class="footer-heading">Invisible Blocks</h2>
+        <p class="text">for building invisible machines</p>
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/danbernier">
+              <span class="icon  icon--github">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/>
+                </svg>
+              </span>
+
+              <span class="username">danbernier</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/danbernier">
+              <span class="icon  icon--twitter">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809
+                  c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/>
+                </svg>
+              </span>
+
+              <span class="username">danbernier</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col  footer-col-3">
+        <p class="text">I make <a href='http://wordcram.org'>WordCram</a>, and try to make generative art in <a href='http://processing.org'>Processing</a>. I read a fair bit, and I try to write well. I co-organize <a href='http://newhaven.io'>NewHaven.IO</a> and <a href='http://newhavenrb.org'>NewHaven.rb</a>. This is my blog.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

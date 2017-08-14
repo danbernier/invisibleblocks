@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>My GoRuCo 2008 highlights | </title>
+    <meta name="description" content="I make <a href='http://wordcram.org'>WordCram</a>, and try to make generative art in <a href='http://processing.org'>Processing</a>. I read a fair bit, and I try to write well. I co-organize <a href='http://newhaven.io'>NewHaven.IO</a> and <a href='http://newhavenrb.org'>NewHaven.rb</a>. This is my blog.
+">
+
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="canonical" href="/2008/4/28/my-goruco-2008-highlights/">
+
+    <script src="/javascript/main.js"></script>
+    <script src="/javascript/p5.min.js"></script>
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Invisible Blocks</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">What's all this, then?</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">My GoRuCo 2008 highlights</h1>
+    <p class="post-meta">Apr 28, 2008 • Dan Bernier</p>
+  </header>
+
+  <article class="post-content">
+    <p><a href="http://rubydoes.net/">Aaron</a> and I had a great time at <a href="http://2008.goruco.com/">GoRuCo 2008</a> last Saturday.  Here are my highlights.</p>
+
+<p><strong>Bryan Helmkamp, Story-Driven Development</strong></p>
+
+<p><a href="http://www.brynary.com/">Bryan Helmkamp’s</a> talk on SDD (<a href="http://www.brynary.com/uploads/Story_Driven_Development.pdf">slides</a>, 1.6 MB PDF) reminded me of what <a href="http://www.hanselman.com">Scott Hanselman</a> calls “spec documents with teeth.”  If I get it right, as you develop user stories, you use a standard format, and code parses your story file, and ties the text directly to functional tests you write.  The stories aren’t executable themselves, but it brings them closer together.</p>
+
+<p>Each story has a name, a description, and scenarios; the descriptions follow the format “As a …, I want to …, so that …”:</p>
+<pre>As a headhunter looking for Rails developers
+I want to search for CVs with 8 years experience
+So that I can make an exorbitant commission</pre>
+
+<p>The scenarios are different ways that story might play out.  Each scenario has a description, which follows the format “Given … When … Then …”:</p>
+
+<p>Scenario: Enough experience.
+<em>Given</em> <strong>a CV with 9 years of Rails experience</strong>
+<em>When</em> <strong>I search for qualified Rails candidates</strong>
+<em>Then</em> <strong>I should find the CV</strong>
+<em>And</em> <strong>I should realize the candidate is full of shit</strong></p>
+
+<p>Then code reads your story files, and uses the text following the keywords to connect to executable functional tests you write:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13</pre></td><td class="code"><pre><span class="n">steps_for</span> <span class="ss">:cvs</span> <span class="k">do</span>
+  <span class="no">Given</span> <span class="s2">"a CV with 3 years of Rails experience"</span> <span class="k">do</span>
+    <span class="vi">@cv</span> <span class="o">=</span> <span class="no">Developer</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">:first_name</span> <span class="o">=&gt;</span> <span class="s2">"Joe"</span><span class="p">,</span>
+      <span class="ss">:last_name</span> <span class="o">=&gt;</span> <span class="s2">"Developer"</span><span class="p">,</span> <span class="ss">:rails_exp</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">,</span>
+      <span class="ss">:gender</span> <span class="o">=&gt;</span> <span class="s2">"Male"</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">steps_for</span> <span class="ss">:cvs</span> <span class="k">do</span>
+  <span class="no">When</span> <span class="s2">"I search for qualified Rails candidates"</span> <span class="k">do</span>
+    <span class="vi">@results</span> <span class="o">=</span> <span class="no">Developer</span><span class="p">.</span><span class="nf">find_qualified</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>The code that actually performs the test is just ActiveRecord.  If you want to test the UI, there’s a DSL called Webrat that simulates the browser.  It seems to live halfway between Watir and mechanize, and it doesn’t do javascript.  It looks like this:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10</pre></td><td class="code"><pre><span class="n">steps_for</span> <span class="ss">:cvs_with_ui</span> <span class="k">do</span>
+  <span class="no">Given</span> <span class="s2">"a CV with 3 years of Rails experience"</span> <span class="k">do</span>
+    <span class="n">visits</span> <span class="n">new_developer_path</span>
+    <span class="n">fills_in</span> <span class="s2">"First name"</span><span class="p">,</span> <span class="ss">:with</span> <span class="o">=&gt;</span> <span class="s2">"Joe"</span>
+    <span class="n">fills_in</span> <span class="s2">"Last name"</span><span class="p">,</span> <span class="ss">:with</span> <span class="o">=&gt;</span> <span class="s2">"Developer"</span>
+    <span class="n">selects</span> <span class="s2">"4"</span><span class="p">,</span> <span class="ss">:from</span> <span class="o">=&gt;</span> <span class="s2">"Rails Experience"</span>
+    <span class="n">chooses</span> <span class="s2">"Male"</span>
+    <span class="n">clicks_button</span> <span class="s2">"Create"</span>
+  <span class="k">end</span>
+<span class="k">end</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>I’m curious about <code class="highlighter-rouge">chooses "Male"</code> – I don’t see how it connects that text with the drop-down it’s supposed to change, unless it looks at values for all drop-downs on the page.  He gave a nice breakdown of the differences between Webrat and Selenium, and how SDD fits into an Agile team.</p>
+
+<p><strong>Giles Bowkett, Archaeopteryx</strong></p>
+
+<p>That’s ARK-ee-OP-ter-ix, or Arcx for short.  Made by Giles (soft ‘g’) BOH-ket, or boh-KET, I wasn’t exactly sure which.  It is, in <a href="http://gilesbowkett.blogspot.com/2008/02/archaeopteryx-ruby-midi-generator.html">his words</a>, “a Ruby MIDI generator,” and “a system for auto-generating, self-modifying music.”</p>
+
+<p>Giles had hands-down the most entertaining talk of the day.  Instead of poring through each token of the code, he compared taking VC money (or “weasel-brained muppet fucker” money) to being an artist with a patron – as the programmer/artist, your job is to make stuff that makes your VC/patron look good.  He showed some of Leonardo da Vinci’s <a href="http://www.vebjorn-sand.com/thebridge.htm">designs</a> that weren’t constructed until recently; that it took this long, he said, was a failure of da Vinci’s time.  Similarly, staying within a VC’s idea of what’s possible is a failure of wasted passion and energy. Start-ups are so cheap now, you can ignore VCs – so follow your passion, create an open-source-enriched ecosystem around it, and make money by servicing the niche market you made.  If your startup is great, you can say “my career is this thing”; if it’s mediocre, you can say “my career <em>includes</em> this thing”.  Just remember that good artists ship.</p>
+
+<p>Which brings us to Arcx, Giles’ idea for a crowd-interfacing, automatic music machine.  Someone asked whether it was wise to name a new project after an extinct species, and Giles got all clever: archaeopteryx was either the last dinosaur or the first bird, and the project could be either the last DJ tool, or the first automatic music machine, played by the crowd.  He played us some samples, and talked through the code just a bit, dropping hits about the <a href="http://en.wikipedia.org/wiki/CLOS">CLOS</a>-like structure of his code.  As fun as his talk was, I would’ve liked to hear more music, and more about the lambda-passing and CLOS stuff.</p>
+
+<p>He also pointed out the most interesting ruby book I’d never heard <span class="asinTitle">of, <a href="http://www.amazon.com/Practical-Ruby-Projects-Programmer-Professionals/dp/159059911X/"><span>Practical Ruby Projects: Ideas for the Eclectic Programmer</span></a></span>.</p>
+
+<p><strong>Chris Wanstrath, ParseTree</strong></p>
+
+<p>Out of all the talks, Chris’ was the one I’ll be using first.  Lispers say “code is data,” and I can see why that’s so powerful – but I haven’t really tried it yet.  ParseTree brings some of that coolness to ruby:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15</pre></td><td class="code"><pre><span class="nb">require</span> <span class="s1">'ruby2ruby'</span>
+
+<span class="k">def</span> <span class="nf">to_ruby</span><span class="p">(</span><span class="o">&amp;</span><span class="n">blk</span><span class="p">)</span>
+   <span class="n">blk</span><span class="p">.</span><span class="nf">to_ruby</span>
+<span class="k">end</span>
+
+<span class="nb">puts</span> <span class="n">to_ruby</span> <span class="p">{</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">}</span>
+<span class="nb">puts</span> <span class="n">to_ruby</span> <span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">42</span> <span class="p">}</span>
+
+<span class="k">def</span> <span class="nf">to_sexp</span><span class="p">(</span><span class="o">&amp;</span><span class="n">blk</span><span class="p">)</span>
+   <span class="n">blk</span><span class="p">.</span><span class="nf">to_sexp</span>
+<span class="k">end</span>
+
+<span class="nb">puts</span> <span class="n">to_sexp</span> <span class="p">{</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">}</span>
+<span class="nb">puts</span> <span class="n">to_sexp</span> <span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">42</span> <span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>…which produces:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10</pre></td><td class="code"><pre><span class="nb">proc</span> <span class="p">{</span>
+  <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nb">proc</span> <span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+  <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">42</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="p">[</span><span class="ss">:proc</span><span class="p">,</span> <span class="kp">nil</span><span class="p">,</span> <span class="p">[</span><span class="ss">:call</span><span class="p">,</span>
+   <span class="p">[</span><span class="ss">:lit</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">:</span><span class="o">+</span><span class="p">,</span> <span class="p">[</span><span class="ss">:array</span><span class="p">,</span> <span class="p">[</span><span class="ss">:lit</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]]]</span>
+<span class="p">[</span><span class="ss">:proc</span><span class="p">,</span> <span class="p">[</span><span class="ss">:dasgn_curr</span><span class="p">,</span> <span class="ss">:i</span><span class="p">],</span> <span class="p">[</span><span class="ss">:call</span><span class="p">,</span>
+   <span class="p">[</span><span class="ss">:dvar</span><span class="p">,</span> <span class="ss">:i</span><span class="p">],</span> <span class="ss">:==</span><span class="p">,</span> <span class="p">[</span><span class="ss">:array</span><span class="p">,</span> <span class="p">[</span><span class="ss">:lit</span><span class="p">,</span> <span class="mi">42</span><span class="p">]]]]</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>Most of the examples he gave generated query syntax in a ruby-idiomatic way: say you have an ORM, and you want users to search for users like this:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3</pre></td><td class="code"><pre><span class="n">old_cat_people</span> <span class="o">=</span> <span class="no">Users</span><span class="p">.</span><span class="nf">select</span> <span class="k">do</span> <span class="o">|</span><span class="n">u</span><span class="o">|</span>
+   <span class="n">u</span><span class="p">.</span><span class="nf">favorite_pet</span> <span class="o">==</span> <span class="s2">"cat"</span> <span class="o">&amp;&amp;</span> <span class="n">u</span><span class="p">.</span><span class="nf">age</span> <span class="o">&gt;</span> <span class="mi">100</span>
+<span class="k">end</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>How could you turn that into SQL?  Call <code class="highlighter-rouge">to_sexp</code> on the query block (that’s “to <a href="http://en.wikipedia.org/wiki/S-expression">S-expression</a>”), and evaluate the <a href="http://en.wikipedia.org/wiki/Abstract_syntax_tree">abstract syntax tree</a> it returns. Like this:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20</pre></td><td class="code"><pre><span class="k">class</span> <span class="nc">Users</span>
+   <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">select</span><span class="p">(</span><span class="o">&amp;</span><span class="n">query</span><span class="p">)</span>
+      <span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="p">.</span><span class="nf">to_sexp</span>
+
+      <span class="c1"># Now, query looks like this:</span>
+      <span class="c1"># [:proc,</span>
+      <span class="c1">#    [:dasgn_curr, :u],</span>
+      <span class="c1">#       [:and,</span>
+      <span class="c1">#          [:call,</span>
+      <span class="c1">#             [:call, [:dvar, :u], :favorite_pet],</span>
+      <span class="c1">#             :==,</span>
+      <span class="c1">#             [:array, [:str, "cat"]]],</span>
+      <span class="c1">#          [:call,</span>
+      <span class="c1">#             [:call, [:dvar, :u], :age],</span>
+      <span class="c1">#             :&gt;,</span>
+      <span class="c1">#             [:array, [:lit, 100]]]]]</span>
+
+      <span class="c1"># Time to evaluate the AST.</span>
+   <span class="k">end</span>
+<span class="k">end</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>Admittedly, it’s not <em>that</em> trivial, but that’s the gist of it – and I think the gem helps you with this.  (Cue the smug Lispers: this stuff is natural in Lisp, the way passing <a href="http://eli.thegreenplace.net/2006/04/18/understanding-ruby-blocks-procs-and-methods/"><span style="text-decoration:line-through;">anonymous functions</span> blocks</a> is in ruby.)</p>
+
+<p>But here’s the interesting thing: we’re on our way to building .Net’s LINQ right into ruby.  Remember, it stands for <strong>L</strong>anguage <strong>In</strong>tegrated <strong>Q</strong>uery.  LINQ is a big deal for .Net folks, because it’s handy.  Microsoft put a lot of work into it, and it still needs its own new syntax.  I think that’s a pretty clear example of the power of being able to see your own AST, and code off it.</p>
+
+<p><strong>Ryan Davis, Hurting Code for Fun and Profit</strong></p>
+
+<p><a href="http://blog.zenspider.com/">Ryan</a>’s talk was nominally about using tools like <a href="http://ruby.sadi.st/Heckle.html">Heckle</a> and <a href="http://ruby.sadi.st/Flog.html">Flog</a> to beat the evil out of code, but my favorite part was his introspection-driven development.  I <em>know</em> I’ll want to refer others to his slides and audio throughout my career.</p>
+
+<p>Some of his tips for improving as a programmer:</p>
+
+<ul>
+  <li>Read.  1 technical book a month.  Sites like c2.com – get close to the experts.</li>
+  <li>Focus.  Only a few smart blogs: not zillions, not flame-prone.  (Flame-retardant blogs?)</li>
+  <li>Grow.  Learn 1 new language a year.  Learn things outside of programming.</li>
+  <li>Learn from the <a href="http://c2.com/cgi/wiki?PotteryChallenge">pottery challenge story</a> in <a href="http://c2.com/cgi/wiki?ArtAndFear">Art &amp; Fear</a>: practice, a lot.</li>
+</ul>
+
+<p>Ryan is also a fellow Dvorak typist, and pretty emphatic about it.</p>
+
+<p><strong>Johnson</strong></p>
+
+<p><a href="http://tenderlovemaking.com/2008/04/23/take-it-to-the-limit-one-more-time/">Johnson</a> is a ruby gem that executes JavaScript code.  (It’s a successor to <a href="http://rubyforge.org/projects/rkelly/">RKelly</a>, which did the same thing.)  I don’t know why I think this is so cool.  Most people agreed the main use case for something like this is testing, but it seems to me there might be neater tricks to play.  We’ll see how I feel after playing with it for a while.</p>
+
+<p><strong>GoRuCo 2009?</strong></p>
+
+<p>I’m definitely going next year – see you there.</p>
+
+  </article>
+
+  
+</div>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col  footer-col-1">
+        <h2 class="footer-heading">Invisible Blocks</h2>
+        <p class="text">for building invisible machines</p>
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/danbernier">
+              <span class="icon  icon--github">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/>
+                </svg>
+              </span>
+
+              <span class="username">danbernier</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/danbernier">
+              <span class="icon  icon--twitter">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809
+                  c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/>
+                </svg>
+              </span>
+
+              <span class="username">danbernier</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col  footer-col-3">
+        <p class="text">I make <a href='http://wordcram.org'>WordCram</a>, and try to make generative art in <a href='http://processing.org'>Processing</a>. I read a fair bit, and I try to write well. I co-organize <a href='http://newhaven.io'>NewHaven.IO</a> and <a href='http://newhavenrb.org'>NewHaven.rb</a>. This is my blog.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

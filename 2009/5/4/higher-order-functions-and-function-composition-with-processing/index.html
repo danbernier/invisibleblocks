@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Higher-Order Functions and Function Composition, with Processing | </title>
+    <meta name="description" content="I make <a href='http://wordcram.org'>WordCram</a>, and try to make generative art in <a href='http://processing.org'>Processing</a>. I read a fair bit, and I try to write well. I co-organize <a href='http://newhaven.io'>NewHaven.IO</a> and <a href='http://newhavenrb.org'>NewHaven.rb</a>. This is my blog.
+">
+
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="canonical" href="/2009/5/4/higher-order-functions-and-function-composition-with-processing/">
+
+    <script src="/javascript/main.js"></script>
+    <script src="/javascript/p5.min.js"></script>
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Invisible Blocks</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">What's all this, then?</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Higher-Order Functions and Function Composition, with Processing</h1>
+    <p class="post-meta">May 4, 2009 • Dan Bernier</p>
+  </header>
+
+  <article class="post-content">
+    <p>I was looking for a good way to illustrate functional composition and higher order functions, and thought that something could be done with <a href="http://processing.org">Processing</a>, a java-based graphics tool. Among other things, Processing exposes raw pixel data for the images it renders, and you can update the pixels programatically, providing a simple kind of image filtering.</p>
+
+<p>For example, here’s some code that converts a color image to grayscale. Just like with HTML, colors are represented<sup><a name="f1" href="#1">1</a></sup> as 3 channels (red, green, blue), and each channel has 255 increments. A gray pixel has equal amounts of red, green, and blue, so if you get the overall brightness of a pixel, and set its color to that much red, green, and blue, it should turn the image gray.</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16</pre></td><td class="code"><pre><span class="n">PImage</span> <span class="n">img</span> <span class="o">=</span> <span class="n">loadImage</span><span class="o">(</span><span class="s">"tattoo.jpg"</span><span class="o">);</span>
+<span class="n">size</span><span class="o">(</span><span class="n">img</span><span class="o">.</span><span class="na">width</span><span class="o">,</span> <span class="n">img</span><span class="o">.</span><span class="na">height</span><span class="o">);</span>  <span class="c1">// set the window size</span>
+<span class="n">image</span><span class="o">(</span><span class="n">img</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>  <span class="c1">// render the image at x:y = 0:0</span>
+
+<span class="n">loadPixels</span><span class="o">();</span> <span class="c1">// load the image's pixels into an array</span>
+<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">pixels</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+    <span class="c1">// get the color for this pixel</span>
+    <span class="n">color</span> <span class="n">c</span> <span class="o">=</span> <span class="n">pixels</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+
+    <span class="c1">// get its brightness</span>
+    <span class="kt">float</span> <span class="n">bright</span> <span class="o">=</span> <span class="n">brightness</span><span class="o">(</span><span class="n">c</span><span class="o">);</span>
+
+    <span class="c1">// Change its color to its grayscale equivalent</span>
+    <span class="n">pixels</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="n">color</span><span class="o">(</span><span class="n">bright</span><span class="o">,</span> <span class="n">bright</span><span class="o">,</span> <span class="n">bright</span><span class="o">);</span>
+<span class="o">}</span>
+<span class="n">updatePixels</span><span class="o">();</span>  <span class="c1">// render the new pixels to the screen</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>Here’s the original image:</p>
+
+<p><a href="/assets/2009/05/tattoo.jpg"><img class="size-medium wp-image-265" src="/assets/2009/05/tattoo.jpg" alt="the original image" width="300" height="199" /></a></p>
+
+<p>…and here’s the filtered version:</p>
+
+<p><a href="/assets/2009/05/tattoo_grayscale.jpg"><img class="size-medium wp-image-266" src="/assets/2009/05/tattoo_grayscale.jpg" alt="the image in grayscale" width="300" height="199" /></a></p>
+
+<p>You can define a bunch of routines like this, each looping through the pixels the same way, but adjusting the colors differently. But if you can separate the pixel-changing part from the pixel-looping part, then you can swap in ANY pixel-changing routine, giving you a flexible image filtering system.</p>
+
+<p>The pixel-changing code is essentially a function that turns one pixel’s color into a new color, and the pixel-looping code uses it to replace each pixel’s original color.  The pixel-changing function could be described like this:</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3</pre></td><td class="code"><pre><span class="n">color</span> <span class="nf">transform</span><span class="o">(</span><span class="n">color</span> <span class="n">c</span><span class="o">)</span> <span class="o">{</span>
+    <span class="o">...</span>
+<span class="o">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>Many modern programming languages support first-class functions, which are a natural way to model this. Processing uses a form of Java, which doesn’t have first-class functions, but we can wrap the functions in a class, giving us an object called a functor.  I called this one ColorTrans, for “color transformer”.</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3</pre></td><td class="code"><pre><span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">ColorTrans</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">abstract</span> <span class="n">color</span> <span class="nf">transform</span><span class="o">(</span><span class="n">color</span> <span class="n">c</span><span class="o">);</span>
+<span class="o">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>The ColorTrans class’ only method, <code class="highlighter-rouge">transform</code>, is our pixel-changing function. We can re-write the loop from before to use a ColorTrans filter, and while we’re at it, we’ll move it into a method that takes the filename as a parameter, too.</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12</pre></td><td class="code"><pre><span class="kt">void</span> <span class="nf">filterImage</span><span class="o">(</span><span class="n">String</span> <span class="n">path</span><span class="o">,</span> <span class="n">ColorTrans</span> <span class="n">filter</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">PImage</span> <span class="n">img</span> <span class="o">=</span> <span class="n">loadImage</span><span class="o">(</span><span class="n">path</span><span class="o">);</span>
+    <span class="n">size</span><span class="o">(</span><span class="n">img</span><span class="o">.</span><span class="na">width</span><span class="o">,</span> <span class="n">img</span><span class="o">.</span><span class="na">height</span><span class="o">);</span>
+    <span class="n">image</span><span class="o">(</span><span class="n">img</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+
+    <span class="n">loadPixels</span><span class="o">();</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">pixels</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+        <span class="c1">// use the filter parameter</span>
+        <span class="n">pixels</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="n">filter</span><span class="o">.</span><span class="na">transform</span><span class="o">(</span><span class="n">pixels</span><span class="o">[</span><span class="n">i</span><span class="o">]);</span>
+    <span class="o">}</span>
+    <span class="n">updatePixels</span><span class="o">();</span>
+<span class="o">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>We can easily recreate the grayscale filter from earlier as a ColorTrans.</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8</pre></td><td class="code"><pre><span class="n">ColorTrans</span> <span class="n">grayscale</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ColorTrans</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">color</span> <span class="nf">transform</span><span class="o">(</span><span class="n">color</span> <span class="n">c</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">float</span> <span class="n">bright</span> <span class="o">=</span> <span class="n">brightness</span><span class="o">(</span><span class="n">c</span><span class="o">);</span>
+        <span class="k">return</span> <span class="nf">color</span><span class="o">(</span><span class="n">bright</span><span class="o">,</span> <span class="n">bright</span><span class="o">,</span> <span class="n">bright</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">};</span>
+
+<span class="n">filterImage</span><span class="o">(</span><span class="s">"tattoo.jpg"</span><span class="o">,</span> <span class="n">grayscale</span><span class="o">);</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>Another really easy filter to write is an inverter. If a pixel has R:100, G:30, B:255, an inverter will return the color R:(255-100), G:(255-30), B:(255-255), or R:155, G:225, B:0.</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9</pre></td><td class="code"><pre><span class="n">ColorTrans</span> <span class="n">invert</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ColorTrans</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">color</span> <span class="nf">transform</span><span class="o">(</span><span class="n">color</span> <span class="n">c</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nf">color</span><span class="o">(</span><span class="mi">255</span> <span class="o">-</span> <span class="n">red</span><span class="o">(</span><span class="n">c</span><span class="o">),</span>
+                     <span class="mi">255</span> <span class="o">-</span> <span class="n">green</span><span class="o">(</span><span class="n">c</span><span class="o">),</span>
+                     <span class="mi">255</span> <span class="o">-</span> <span class="n">blue</span><span class="o">(</span><span class="n">c</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">};</span>
+
+<span class="n">filterImage</span><span class="o">(</span><span class="s">"tattoo.jpg"</span><span class="o">,</span> <span class="n">invert</span><span class="o">);</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>The image produced by an inverter is like a film negative.</p>
+
+<p><a href="/assets/2009/05/tattoo_invert.jpg"><img class="size-medium wp-image-268" src="/assets/2009/05/tattoo_invert.jpg" alt="inverted, like a negative" width="300" height="199" /></a></p>
+
+<p>Now we begin to see the benefits of keeping the-parts-that-change separate from the-parts-that-don’t: we can easily define and swap in new filters. This is one of the big parts of higher-order programming: writing routines that are configured by passing in functions (or functors, in this case) to do part of the work.</p>
+
+<h3 id="manufacturing-a-colortrans">Manufacturing a ColorTrans</h3>
+
+<p>A useful kind of filter is one that increases (or decreases) the color on one channel: add some red, or remove some green. This kind of filter is easy to create:</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5</pre></td><td class="code"><pre><span class="n">ColorTrans</span> <span class="n">aFifthMoreRed</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ColorTrans</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">color</span> <span class="nf">transform</span><span class="o">(</span><span class="n">color</span> <span class="n">c</span><span class="o">)</span> <span class="o">{</span>
+    	<span class="k">return</span> <span class="nf">color</span><span class="o">(</span><span class="n">red</span><span class="o">(</span><span class="n">c</span><span class="o">)</span> <span class="o">*</span> <span class="mf">1.2</span><span class="o">,</span> <span class="n">green</span><span class="o">(</span><span class="n">c</span><span class="o">),</span> <span class="n">blue</span><span class="o">(</span><span class="n">c</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">};</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>This filter will increase the amout of red in the image by 20%. But 20% is a pretty arbitrary number; it’d be better if we could tell the filter how much to increase the red by. Generally, you’d add an “amount” parameter to the transform method, but then filterImage would have to know that this ColorTrans object takes an extra parameter. It’s kind of nice having filterImage treat all ColorTrans objects the same, just passing in the color.</p>
+
+<p>Instead, we can make a method that builds ColorTrans objects: we tell it how much to increase the red by, and it builds a ColorTrans that does it for us.</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11</pre></td><td class="code"><pre><span class="n">ColorTrans</span> <span class="nf">ampRed</span><span class="o">(</span><span class="kd">final</span> <span class="kt">float</span> <span class="n">amount</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">ColorTrans</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">color</span> <span class="nf">transform</span><span class="o">(</span><span class="n">color</span> <span class="n">c</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">color</span><span class="o">(</span><span class="n">red</span><span class="o">(</span><span class="n">c</span><span class="o">)</span> <span class="o">*</span> <span class="n">amount</span><span class="o">,</span> <span class="n">green</span><span class="o">(</span><span class="n">c</span><span class="o">),</span> <span class="n">blue</span><span class="o">(</span><span class="n">c</span><span class="o">));</span>
+        <span class="o">}</span>
+    <span class="o">};</span>
+<span class="o">}</span>
+
+<span class="n">ColorTrans</span> <span class="n">aQuarterMoreRed</span> <span class="o">=</span> <span class="n">ampRed</span><span class="o">(</span><span class="mf">1.25</span><span class="o">);</span>
+<span class="n">ColorTrans</span> <span class="n">aThirdLessRed</span> <span class="o">=</span> <span class="n">ampRed</span><span class="o">(</span><span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="o">);</span>
+<span class="n">ColorTrans</span> <span class="n">noRedAtAll</span> <span class="o">=</span> <span class="n">ampRed</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>(If you’re curious why <code class="highlighter-rouge">amount</code> is final, the short answer is “because the compiler says so,” but there’s a better answer<sup><a name="f2" href="#2">2</a></sup>.)</p>
+
+<p>This is pretty nice, because we can use this inside an animation loop, animating the amount of color amplification.</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11</pre></td><td class="code"><pre><span class="kt">float</span> <span class="n">theta</span> <span class="o">=</span> <span class="mf">0.0</span><span class="o">;</span>
+
+<span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">filterImage</span><span class="o">(</span><span class="s">"tattoo.jpg"</span><span class="o">,</span> <span class="n">noChange</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kt">void</span> <span class="nf">draw</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kt">float</span> <span class="n">ampRedAmount</span> <span class="o">=</span> <span class="n">sin</span><span class="o">(</span><span class="n">theta</span><span class="o">)</span> <span class="o">*</span> <span class="mf">1.2</span><span class="o">;</span>
+    <span class="n">filterImage</span><span class="o">(</span><span class="s">"tattoo.jpg"</span><span class="o">,</span> <span class="n">ampRed</span><span class="o">(</span><span class="n">ampRedAmount</span><span class="o">));</span>
+    <span class="n">theta</span> <span class="o">+=</span> <span class="mf">0.1</span><span class="o">;</span>
+<span class="o">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>[Here’s where I’d link to the applet, nicely hosted somewhere, if I had a hosting service that allowed applets.  I’ll try to find a place to put all the code, so you can try it yourself.]</p>
+
+<p>Processing calls <code class="highlighter-rouge">setup</code> to initialize the animation, and calls <code class="highlighter-rouge">draw</code> once per “tick”, to advance the animation. Here, in each frame of the animation, a new ColorTrans is constructed by <code class="highlighter-rouge">ampRed</code>, with the amount tied to the sine wave function, oscillating between 0 and 1.2. When viewed, the amount of red in the image swells and falls, and back again<sup><a name="f3" href="#3">3</a></sup>.</p>
+
+<p>This is another big part of higher-order programming: writing functions that build other functions, based on some arguments. Combined with routines that take functions as arguments, it’s a handy way to break down some problems. If done well, the routines that take functions as arguments, and the functions that build those functions, can become a sort of mini-language, a fluent interface, or almost an embedded DSL.</p>
+
+<h3 id="plugging-filters-together---filter-composition">Plugging filters together - filter composition</h3>
+
+<p>This is where it gets fun. Suppose you’ve created an ampBlue that works just like ampRed, and now you want to filter an image with <em>both</em> of them.  One approach might be something like this:</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4</pre></td><td class="code"><pre><span class="kt">void</span> <span class="nf">draw</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">filterImage</span><span class="o">(</span><span class="s">"tattoo.jpg"</span><span class="o">,</span> <span class="n">ampRed</span><span class="o">(</span><span class="n">sin</span><span class="o">(</span><span class="n">theta</span><span class="o">)</span> <span class="o">*</span> <span class="mf">1.2</span><span class="o">));</span>
+    <span class="n">filterImage</span><span class="o">(</span><span class="s">"tattoo.jpg"</span><span class="o">,</span> <span class="n">ampBlue</span><span class="o">(</span><span class="n">cos</span><span class="o">(</span><span class="n">theta</span><span class="o">)</span> <span class="o">*</span> <span class="mf">1.2</span><span class="o">));</span>
+<span class="o">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>Using the sine and cosine functions, the image should pulse nicely through reds and blues. The only problem is that it doesn’t really work, because filterImage loads the image fresh from the filesystem each time, so you only get the effect of the ampBlue filter. So how can we apply multiple filters?</p>
+
+<p>We plug them together. We want a filter that does the work of two other filters, and we want it to look like any other filter, so filterImage won’t know the difference. To get this, we can add a method to ColorTrans that returns a <em>new</em> ColorTrans, which calls first the one, and then the other.</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13</pre></td><td class="code"><pre><span class="kd">class</span> <span class="nc">ColorTrans</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="kd">public</span> <span class="n">ColorTrans</span> <span class="nf">then</span><span class="o">(</span><span class="kd">final</span> <span class="n">ColorTrans</span> <span class="n">applySecond</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="n">ColorTrans</span> <span class="n">applyFirst</span> <span class="o">=</span> <span class="k">this</span><span class="o">;</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">ColorTrans</span><span class="o">()</span> <span class="o">{</span>
+	    <span class="n">color</span> <span class="nf">transform</span><span class="o">(</span><span class="n">color</span> <span class="n">c</span><span class="o">)</span> <span class="o">{</span>
+	        <span class="k">return</span> <span class="nf">applySecond</span><span class="o">(</span><span class="n">applyFirst</span><span class="o">(</span><span class="n">c</span><span class="o">));</span>
+	    <span class="o">}</span>
+	<span class="o">};</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="n">filterImage</span><span class="o">(</span><span class="s">"tattoo.jpg"</span><span class="o">,</span> <span class="n">grayscale</span><span class="o">.</span><span class="na">then</span><span class="o">(</span><span class="n">invert</span><span class="o">));</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p><a href="/assets/2009/05/tattoo_grayscale_invert.jpg"><img class="size-medium wp-image-268" src="/assets/2009/05/tattoo_grayscale_invert.jpg" alt="first grayscaled, then inverted" width="300" height="199" /></a></p>
+
+<p>Combining filters becomes a matter of chaining them together through <code class="highlighter-rouge">then</code>. The red-and-blue example becomes:</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5</pre></td><td class="code"><pre><span class="kt">void</span> <span class="nf">draw</span><span class="o">()</span> <span class="o">{</span>
+   <span class="n">filterImage</span><span class="o">(</span><span class="s">"tattoo.jpg"</span><span class="o">,</span>
+        <span class="n">ampRed</span><span class="o">(</span><span class="n">sin</span><span class="o">(</span><span class="n">theta</span><span class="o">)</span> <span class="o">*</span> <span class="mf">1.2</span><span class="o">).</span><span class="na">then</span><span class="o">(</span>
+            <span class="n">ampBlue</span><span class="o">(</span><span class="n">cos</span><span class="o">(</span><span class="n">theta</span><span class="o">)</span> <span class="o">*</span> <span class="mf">1.2</span><span class="o">)));</span>
+<span class="o">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<h3 id="processing-does-it-kind-of-this-way-too">Processing does it kind of this way, too</h3>
+
+<p>If you look at the <a href="http://dev.processing.org/source/">source for Processing</a>, in <a href="http://dev.processing.org/source/index.cgi/trunk/processing/core/src/processing/core/PImage.java?view=markup&amp;rev=5417">PImage.java</a> on line 619, you’ll find code that looks kind of like this:</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15</pre></td><td class="code"><pre>  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">filter</span><span class="o">(</span><span class="kt">int</span> <span class="n">kind</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">loadPixels</span><span class="o">();</span>
+
+    <span class="k">switch</span> <span class="o">(</span><span class="n">kind</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="nl">BLUR:</span> <span class="o">...</span>
+      <span class="k">case</span> <span class="nl">GRAY:</span> <span class="o">...</span>
+      <span class="k">case</span> <span class="nl">INVERT:</span> <span class="o">...</span>
+      <span class="k">case</span> <span class="nl">POSTERIZE:</span> <span class="o">...</span>
+      <span class="k">case</span> <span class="nl">RGB:</span> <span class="o">...</span>
+      <span class="k">case</span> <span class="nl">THRESHOLD:</span> <span class="o">...</span>
+      <span class="k">case</span> <span class="nl">ERODE:</span> <span class="o">...</span>
+      <span class="k">case</span> <span class="nl">DILATE:</span> <span class="o">...</span>
+    <span class="o">}</span>
+    <span class="n">updatePixels</span><span class="o">();</span>  <span class="c1">// mark as modified</span>
+  <span class="o">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>It basically does just what I’ve been doing, except the operations are hard-coded into the source, rather than being separated behind a class interface. The filters aren’t composable directly, though you can call a number of them in a row:</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3</pre></td><td class="code"><pre><span class="n">filter</span><span class="o">(</span><span class="n">INVERT</span><span class="o">);</span>
+<span class="n">filter</span><span class="o">(</span><span class="n">THRESHOLD</span><span class="o">);</span>
+<span class="n">filter</span><span class="o">(</span><span class="n">DILATE</span><span class="o">);</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>One benefit of this approach is that it’s easy to see, line-by-line, exactly what’s happening.  I’d bet it beats the pants off of the ColorTrans version in benchmarks, too. But filters aren’t composeable, and it’s certainly not extendable. When you’re doing computation-intensive graphics, every bit of speed is important; when you’re illustrating a programming idea, it’s not.  Decide for yourself which is more important for your needs.</p>
+
+<hr />
+
+<p><a name="1"></a></p>
+<ol>
+  <li>It may seem weird, if you know Java, that the parameter’s type is <code class="highlighter-rouge">color</code> – it’s not a java primitive, but it doesn’t follow the normal classname conventions. It’s just the way Processing does it. You can read more about the <a href="http://processing.org/reference/color_.html">color constructor in the Processing reference</a>.  <a href="#f1">[back]</a></li>
+</ol>
+
+<p><a name="2"></a></p>
+<ol>
+  <li>Taken from the <a href="http://c2.com/cgi/wiki?AnonymousInnerClass">AnonymousInnerClasses</a> page on the Portland Patterns Repository, 2009-04-30:</li>
+</ol>
+<blockquote>
+AnonymousInnerClasses can also be used to create something like closures in the JavaLanguage. However they do not "close over" the lexical environment so they aren't TrueClosures. (They can capture the value of local variables, but they do not have access to the variable binding so they can't change the original variable. Which Java makes quite clear by only allowing InnerClasses to refer to local variables that have been declared final (so no-one can change them)).</blockquote>
+
+<p><a href="#f2">[back]</a></p>
+
+<p><a name="3"></a></p>
+<ol>
+  <li>The <code class="highlighter-rouge">noChange</code> filter returns the same color it was given – an identity function.  <code class="highlighter-rouge">filterImage</code> is called inside <code class="highlighter-rouge">setup</code> only so the window size is set correctly, since setting the size inside <code class="highlighter-rouge">draw</code> has no effect. And <em>theta</em> is just a Greek letter often used for angles and trigonometry.<a href="#f3">[back]</a></li>
+</ol>
+
+  </article>
+
+  
+
+  <a id='comments'></a>
+  <h3>2 Comments on "Higher-Order Functions and Function Composition, with Processing"</h3>
+
+  
+  <div class='comment'>
+    <div><p>I think:</p>
+
+<p>float bright = brightness(c);</p>
+
+<p>in the first code block should be:</p>
+
+<p>float bright = brightness(i); //(s/c/i/)</p>
+
+<p>and:</p>
+
+<p>ColorTrans grayscale = new ColorTrans() {<br />
+    float bright = brightness(c);<br />
+    return color(bright, bright, bright);<br />
+};</p>
+
+<p>should be:</p>
+
+<p>ColorTrans grayscale = new ColorTrans() {
+    color transform(color c) {
+        float bright = brightness(c);<br />
+        return color(bright, bright, bright);
+    }
+};</p>
+</div>
+
+    
+    <span class='author'>Dan</span>
+    
+
+    <span class='date'>Tue May  5 13:31:04 2009</span>
+  </div>
+  
+  <div class='comment'>
+    <div><p>Dan,</p>
+
+<p>Thanks, my bad.  You almost had it…for the first block, I forgot to make a reference to the pixel:</p>
+
+<p>color c = pixels[i];</p>
+
+<p>// get its brightness
+float bright = brightness(c);</p>
+
+<p>For the second, I forgot to put the anonymous class’ method in there (oops):</p>
+
+<p>ColorTrans grayscale = new ColorTrans() {
+    color transform(color c) {
+        float bright = brightness(c);
+        return color(bright, bright, bright);
+    }
+};</p>
+
+<p>The hazards of restructuring pasted-in code, and not re-testing it…</p>
+</div>
+
+    
+    <span class='author'>Dan Bernier</span>
+    
+
+    <span class='date'>Tue May  5 15:42:15 2009</span>
+  </div>
+  
+
+  
+</div>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col  footer-col-1">
+        <h2 class="footer-heading">Invisible Blocks</h2>
+        <p class="text">for building invisible machines</p>
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/danbernier">
+              <span class="icon  icon--github">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/>
+                </svg>
+              </span>
+
+              <span class="username">danbernier</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/danbernier">
+              <span class="icon  icon--twitter">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809
+                  c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/>
+                </svg>
+              </span>
+
+              <span class="username">danbernier</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col  footer-col-3">
+        <p class="text">I make <a href='http://wordcram.org'>WordCram</a>, and try to make generative art in <a href='http://processing.org'>Processing</a>. I read a fair bit, and I try to write well. I co-organize <a href='http://newhaven.io'>NewHaven.IO</a> and <a href='http://newhavenrb.org'>NewHaven.rb</a>. This is my blog.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

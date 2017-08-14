@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Functional Programming in JavaScript and Ruby | </title>
+    <meta name="description" content="I make <a href='http://wordcram.org'>WordCram</a>, and try to make generative art in <a href='http://processing.org'>Processing</a>. I read a fair bit, and I try to write well. I co-organize <a href='http://newhaven.io'>NewHaven.IO</a> and <a href='http://newhavenrb.org'>NewHaven.rb</a>. This is my blog.
+">
+
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="canonical" href="/2007/2/23/functional-programming-in-javascript-and-ruby/">
+
+    <script src="/javascript/main.js"></script>
+    <script src="/javascript/p5.min.js"></script>
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Invisible Blocks</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">What's all this, then?</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Functional Programming in JavaScript and Ruby</h1>
+    <p class="post-meta">Feb 23, 2007 • Dan Bernier</p>
+  </header>
+
+  <article class="post-content">
+    <p>[<strong>UPDATE:</strong> I’ve been lucky enough to have some commenters who know much more about functional programming than I do. There’s some good reading in the <a href="#comments">comments</a>, and you especially should read them before using this stuff in production.]</p>
+
+<p>I’ve been playing with functional JavaScript tonight. It’s not the greatest of OO-functional hybrid languages, but it’s good to supplant my fledgling functional skills with something besides Ruby. Plus, I’m <a href="http://javascript.infogami.com/Functional_Javascript">not</a> the <a href="http://www.svendtofte.com/code/practical_functional_js/">only</a> <a href="http://www.b-list.org/weblog/2006/10/11/functional-language-s-right-under-your-nose">one</a> <a href="http://blog.360.yahoo.com/blog-Vdrx7eU3fqovesPu9Y8Y?p=24">doing</a> it, so I can compare notes. And who doesn’t love JavaScript, right? …right?</p>
+
+<p>Before I get much farther, I should thank <a href="http://notes-on-haskell.blogspot.com">Adam Turoff</a> for his post <a href="http://notes-on-haskell.blogspot.com/2007/02/whats-wrong-with-for-loop.html">What’s Wrong with the For Loop</a>. It gets at the root of the why we’d use a functional programming language instead of an OO or procedural one, and (bonus!) it helped me grok Ruby’s <code class="highlighter-rouge">inject</code> method (it’s the same as my new friend <code class="highlighter-rouge">fold</code>). Go read his post, it’s good for you. And if you like it, we recommend the <a href="http://swiss.csail.mit.edu/classes/6.001/abelson-sussman-lectures/">1981 <span class="caps">SICP</span> lectures</a>. Robusto!</p>
+
+<h3 id="here-we-go">Here we go!</h3>
+
+<p>Introductions to functional programming usually discuss three methods: <code class="highlighter-rouge">map</code>, <code class="highlighter-rouge">find</code>, and <code class="highlighter-rouge">fold</code>. The names aren’t always the same, but those are the three amigos of functional programming. They all do something different to arrays (or lists, or collections, or whatever you want to call them):</p>
+
+<ul>
+  <li><code class="highlighter-rouge">find</code> does what it says. You give it some criteria, it returns all the matching elements. The criteria is expressed as a function, a little bit of code that says “yes, I want this one,” or “no, skip it.” If we’re picking out the red gumballs, you could say (in Ruby) <code class="highlighter-rouge">gumballs.find_all { |ball| ball.isRed? }</code> <code class="highlighter-rouge">find</code> is also known as <code class="highlighter-rouge">filter</code>. [Ruby only calls it <code class="highlighter-rouge">find_all</code> because it uses <code class="highlighter-rouge">find</code> for returning just the first match.] Po-tay-to, po-tah-to.</li>
+  <li><code class="highlighter-rouge">fold</code> takes each element, and “folds” it into a running total. Think of summation—you’re folding each new number into a running tally. In Haskell (and, it seems, many functional languages), it comes in two varietes, <code class="highlighter-rouge">fold_left</code> and <code class="highlighter-rouge">fold_right</code>, which just mean “start from the left” and “start from the right”. Ruby calls it <code class="highlighter-rouge">inject</code>, which confuses some people (like me).</li>
+  <li><code class="highlighter-rouge">map</code> is the mathiest of them (don’t be scared, it’s easy!). In English, we’d say “change each item like <em>this</em>, and give me the new results.” Let’s down-case a list of words. “Change each word to <em>lowercase</em>, and give me the downcased words.” <code class="highlighter-rouge">words.map { |word| word.downcase }</code>. The name “map” comes from <a href="http://en.wikipedia.org/wiki/Function_%28math%29">functions in math</a> (surprise), where you map each input to one output. The whole <code class="highlighter-rouge">y = f(x)</code> thing…<code class="highlighter-rouge">f</code> is for “function”. Ruby also calls this <code class="highlighter-rouge">collect</code>.</li>
+</ul>
+
+<p>Now, none of these comes predefined in JavaScript. How can this be? Well, all the JavaScript engines out there are in browsers, and we know that “when browser elephants battle, it is the JavaScript grass that suffers.” The browser developers are busy with other things. But this oversight means we have some easy examples to write. It’s boring to re-implement existing stuff, just for the exercise. So here we go—I’ll compare examples in JavaScript and Ruby.</p>
+
+<h3 id="a-quick-word-about-javascripts-open-classes">A quick word about JavaScript’s open classes</h3>
+
+<p>JavaScript has open classes, just like Ruby. In other words, you can re-open a class definition, give it a method, and then start using that method on instances of that class. JavaScript’s OO is prototype-based, not class-based, so it looks a little weird:</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15</pre></td><td class="code"><pre><span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">first</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="p">}</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">].</span><span class="nx">first</span><span class="p">();</span>  <span class="c1">// 1</span>
+
+<span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">rest</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">].</span><span class="nx">rest</span><span class="p">();</span>  <span class="c1">// [2, 3]</span>
+
+<span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">isEmpty</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">length</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">[].</span><span class="nx">isEmpty</span><span class="p">();</span>    <span class="c1">// true</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">isEmpty</span><span class="p">();</span>   <span class="c1">// false</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>“For the prototypical Array, the Array from which all other Arrays spring forth, create a property called ‘first’, which shall be this function, which returns the first element of the Array…” Just a Biblical way of defining a method for a class.</p>
+
+<p>Open classes is good news, because it’ll make our job of adding <code class="highlighter-rouge">map</code>, <code class="highlighter-rouge">find</code>, and <code class="highlighter-rouge">fold</code> possible, since they’ll be going into the Array class.</p>
+
+<h3 id="find">Find</h3>
+
+<p><code class="highlighter-rouge">find</code> is the easiest, so we’ll start there. Let’s take a look:</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9</pre></td><td class="code"><pre><span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">find</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">isAMatch</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">matches</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">isAMatch</span><span class="p">(</span><span class="k">this</span><span class="p">[</span><span class="nx">i</span><span class="p">]))</span> <span class="p">{</span>
+            <span class="nx">matches</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="k">this</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">matches</span><span class="p">;</span>
+<span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p><code class="highlighter-rouge">find</code> is a function, and it takes the function <code class="highlighter-rouge">isAMatch</code> as a parameter. One of the hallmarks of the functional programming style is that functions are first-class citizens in the language: they can be treated like any other variable, so they can be passed around as parameters, and returned from other functions. [<a href="http://en.wikipedia.org/wiki/Closure_%28computer_science%29">Closures</a> and <a href="http://en.wikipedia.org/wiki/Anonymous_function">anonymous functions</a> are also major features.] <code class="highlighter-rouge">isAMatch</code> is a function that tells you whether we should include any given element of the Array. Use <code class="highlighter-rouge">find</code> like this:</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10</pre></td><td class="code"><pre><span class="kd">var</span> <span class="nx">evens</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">].</span><span class="nx">find</span><span class="p">(</span>
+    <span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">);</span>
+
+<span class="kd">function</span> <span class="nx">isOdd</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kd">var</span> <span class="nx">odds</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">].</span><span class="nx">find</span><span class="p">(</span><span class="nx">isOdd</span><span class="p">);</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>The first example uses an in-line, anonymous function; the second uses a named function. Both work fine, but here is where we start to see JavaScript’s awkward syntax get in the way. Consider the Ruby version:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25</pre></td><td class="code"><pre><span class="c1"># find_all comes pre-defined in Array, via the Enumerable module,</span>
+<span class="c1"># but this is what it would look like...</span>
+<span class="k">class</span> <span class="nc">Array</span>
+  <span class="k">def</span> <span class="nf">find_all</span>
+    <span class="n">matches</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="nb">self</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">item</span><span class="o">|</span>   <span class="c1"># Ruby says 'self', not 'this'.</span>
+      <span class="k">if</span> <span class="k">yield</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>      <span class="c1"># yield says "Call the block we were given"</span>
+        <span class="n">matches</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>   <span class="c1"># Stuff item into matches</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+    <span class="k">return</span> <span class="n">matches</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">evens</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">].</span><span class="nf">find_all</span> <span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+  <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="p">}</span>
+
+<span class="k">def</span> <span class="nf">isOdd</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+  <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span>
+<span class="k">end</span>
+
+<span class="n">odds</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">].</span><span class="nf">find_all</span> <span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+  <span class="n">isOdd</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>In Ruby, every expression returns a value, so <code class="highlighter-rouge">return</code> disappears. And Ruby’s blocks mean we don’t need to wrap our match condition inside <code class="highlighter-rouge">function(i) { ... }</code>. But Ruby’s <code class="highlighter-rouge">find_all</code> won’t take a reference to a method as a parameter:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6</pre></td><td class="code"><pre><span class="k">def</span> <span class="nf">isOdd</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span>
+<span class="k">end</span>
+
+<span class="n">odds</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">].</span><span class="nf">find_all</span><span class="p">(</span><span class="n">isOdd</span><span class="p">)</span>
+<span class="c1"># gives error: `isOdd': wrong number of arguments (0 for 1) (ArgumentError)</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>Once you’ve defined a function in JavaScript, you can pass it around by name, like any other variable, but you need that <code class="highlighter-rouge">function(i) { ... }</code> syntax around your test. In Ruby, <code class="highlighter-rouge">find_all</code> takes a block instead of parameters, so you can’t pass a reference. Given how nice blocks are in Ruby, I guess this can be forgiven, but it’s a little weird.</p>
+
+<h3 id="fold">Fold</h3>
+
+<p>Now we’ll get into the recursive guys. <code class="highlighter-rouge">find</code> is a pain to implement recursively in JavaScript, so I did it iteratively, but recursion works well for <code class="highlighter-rouge">fold</code> and <code class="highlighter-rouge">map</code>. Since recursion seems to be more idiomatic in functional languages, we’ll use it here.</p>
+
+<p>I took two shots at <code class="highlighter-rouge">fold</code> in JavaScript (I’m learning). Here they are:</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22</pre></td><td class="code"><pre><span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">fold_recursive</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">combineFunc</span><span class="p">,</span> <span class="nx">base</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">())</span> <span class="p">{</span>    <span class="c1">// I added isEmpty, first, and rest, as above</span>
+        <span class="k">return</span> <span class="nx">base</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">combineFunc</span><span class="p">(</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">first</span><span class="p">(),</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">rest</span><span class="p">().</span><span class="nx">fold_recursive</span><span class="p">(</span><span class="nx">combineFunc</span><span class="p">,</span> <span class="nx">base</span><span class="p">));</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">fold_iterative</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">combineFunc</span><span class="p">,</span> <span class="nx">tally</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">tally</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">rest</span><span class="p">().</span><span class="nx">fold_iterative</span><span class="p">(</span>
+            <span class="nx">combineFunc</span><span class="p">,</span>
+            <span class="nx">combineFunc</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">first</span><span class="p">(),</span>
+                        <span class="nx">tally</span><span class="p">));</span>
+    <span class="p">}</span>
+<span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>The first is straightforward recursion. If the list is empty, we’re done, so return the base value (zero, if we’re adding). Otherwise, combine the first value with whatever the rest of the items fold up to. [If you have trouble writing recursively, this is the canonical pattern you should probably follow: if done, do base case; else, do <em>this</em> element, then the <em>rest</em> of them.]</p>
+
+<p>The second is a little different. You’ve got a starting <code class="highlighter-rouge">base</code>, the <code class="highlighter-rouge">tally</code> so far, and a <code class="highlighter-rouge">combineFunc</code> that folds each value into the <code class="highlighter-rouge">tally</code>. If the list is empty, we’re done, so return the <code class="highlighter-rouge">tally</code>. Otherwise, fold the first item into the tally for the rest of the list.</p>
+
+<p>It the first, you hang around, waiting for the answer to the rest of the problem, before you add in your part of the sum. In the second, you push your part of the sum down into the next round of processing, so you don’t have to remember anything. When the answer comes back from the recursive call, it’ll already have your part of the sum in it.</p>
+
+<p>[The first one is a “linear recursive process”, the second is “linear iterative process”, even though both are recursive procedures. If your interest is piqued, check out <a href="http://mitpress.mit.edu/sicp/full-text/book/book-Z-H-11.html#%_sec_1.2.1">this <span class="caps">SICP</span> page</a>, but it’s not needed for this article. For the rest of this post, I’ll be using the linear recursive version, because it’s conceptually clearer. Thanks to mfp for keeping me honest.]</p>
+
+<p>Here’s how <code class="highlighter-rouge">fold</code> is used:</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9</pre></td><td class="code"><pre><span class="c1">// A handy adding function</span>
+<span class="kd">function</span> <span class="nx">add</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">sum_recursive</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">fold_recursive</span><span class="p">(</span><span class="nx">add</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">].</span><span class="nx">sum_recursive</span><span class="p">();</span>  <span class="c1">// 6</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>To <code class="highlighter-rouge">sum</code> the elements of an array, we want to <code class="highlighter-rouge">fold</code> the numbers together by <code class="highlighter-rouge">add</code>-ing them, starting at 0. Easy, isn’t it?</p>
+
+<p>Here are two Ruby versions, based on <code class="highlighter-rouge">fold_recursive</code>…one that takes a function (called a “procedure object” in Ruby) as a parameter, one that takes a block:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42</pre></td><td class="code"><pre><span class="k">class</span> <span class="nc">Array</span>
+  <span class="k">def</span> <span class="nf">rest</span>     <span class="c1"># We'll define rest, to keep the examples similar</span>
+    <span class="nb">self</span><span class="p">[</span><span class="mi">1</span><span class="p">.</span><span class="nf">.</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">fold_w_proc</span><span class="p">(</span><span class="n">combineFunc</span><span class="p">,</span> <span class="n">base</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">self</span><span class="p">.</span><span class="nf">empty?</span>
+      <span class="n">base</span>
+    <span class="k">else</span>
+      <span class="c1"># "func.call(args)" instead of JavaScript's "func(args)"</span>
+      <span class="n">combineFunc</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span>
+        <span class="nb">self</span><span class="p">.</span><span class="nf">first</span><span class="p">,</span>
+        <span class="nb">self</span><span class="p">.</span><span class="nf">rest</span><span class="p">.</span><span class="nf">fold_w_proc</span><span class="p">(</span>
+          <span class="n">combineFunc</span><span class="p">,</span>
+          <span class="n">base</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">fold_w_block</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">combineFunc</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">self</span><span class="p">.</span><span class="nf">empty?</span>
+      <span class="n">base</span>
+    <span class="k">else</span>
+      <span class="n">combineFunc</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span>
+        <span class="nb">self</span><span class="p">.</span><span class="nf">first</span><span class="p">,</span>
+        <span class="nb">self</span><span class="p">.</span><span class="nf">rest</span><span class="p">.</span><span class="nf">fold_w_block</span><span class="p">(</span>
+          <span class="n">base</span><span class="p">,</span>
+          <span class="o">&amp;</span><span class="n">combineFunc</span><span class="p">)</span>
+        <span class="p">)</span>
+      <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">sum_w_proc</span>
+    <span class="n">fold_w_proc</span><span class="p">(</span><span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">|</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="p">},</span> <span class="mi">0</span><span class="p">)</span>
+  <span class="k">end</span>
+  <span class="k">def</span> <span class="nf">sum_w_block</span>
+    <span class="n">fold_w_block</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">|</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="p">}</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">].</span><span class="nf">sum_w_proc</span>    <span class="c1"># 6</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">].</span><span class="nf">sum_w_block</span>   <span class="c1"># 6</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>Notice how similar <code class="highlighter-rouge">fold_w_block</code> and <code class="highlighter-rouge">fold_w_proc</code> are to the JavaScript <code class="highlighter-rouge">fold_recursive</code>. The thing that differentiates <code class="highlighter-rouge">fold_w_block</code> and <code class="highlighter-rouge">fold_w_proc</code> is how they’re used. The definitions themselves are nearly identical, except for the order of the parameters. Look at <code class="highlighter-rouge">sum_w_proc</code> and <code class="highlighter-rouge">sum_w_block</code>…<code class="highlighter-rouge">sum_w_block</code> is a bit clearer, isn’t it? But if you use blocks, you lose the ability to pass a function reference as a parameter.</p>
+
+<h3 id="map">Map</h3>
+
+<p><code class="highlighter-rouge">map</code> looks a lot like <code class="highlighter-rouge">fold</code>.</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14</pre></td><td class="code"><pre><span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">map</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">mapFunc</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nx">mapFunc</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">first</span><span class="p">())].</span><span class="nx">concat</span><span class="p">(</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">rest</span><span class="p">().</span><span class="nx">map</span><span class="p">(</span><span class="nx">mapFunc</span><span class="p">));</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">cube</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">i</span> <span class="o">*</span> <span class="nx">i</span> <span class="o">*</span> <span class="nx">i</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">].</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">i</span> <span class="o">*</span> <span class="nx">i</span><span class="p">;</span> <span class="p">});</span>  <span class="c1">// [1, 4, 9]</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">].</span><span class="nx">map</span><span class="p">(</span><span class="nx">cube</span><span class="p">);</span>  <span class="c1">// [1, 8, 18]</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>Again, it’s basic recursion…if we’re out of items, return the empty list (ie, this). Otherwise, make an array of the first mapped item, and concatenate it with the rest of the mapped items. Again, with JavaScript, you can pass your function in-line, or by reference.</p>
+
+<p>Here’s a recursive definition of <code class="highlighter-rouge">map</code> in Ruby:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11</pre></td><td class="code"><pre><span class="k">class</span> <span class="nc">Array</span>
+  <span class="k">def</span> <span class="nf">map</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mapFunc</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">self</span><span class="p">.</span><span class="nf">empty?</span>
+      <span class="nb">self</span>
+    <span class="k">else</span>
+      <span class="p">[</span><span class="n">mapFunc</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="nf">first</span><span class="p">)]</span> <span class="o">+</span> <span class="nb">self</span><span class="p">.</span><span class="nf">rest</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mapFunc</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">].</span><span class="nf">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="n">i</span> <span class="o">*</span> <span class="n">i</span> <span class="p">}</span>  <span class="c1"># [1, 4, 9]</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>As before, calling <code class="highlighter-rouge">map</code> with a block certainly looks nicer than by passing in functions, but you lose the ability to define a function somewhere, and pass it in by name, like we did with <code class="highlighter-rouge">cube</code> in JavaScript.</p>
+
+<h3 id="wrap-up">Wrap-up</h3>
+
+<p>If you want to explore functional programming, both JavaScript and Ruby are good candidates. They both have their goods and bads. Up to now, I’ve only used Ruby, but JavaScript certainly has its benefits, and exposure to both balances out my understanding.</p>
+
+<p>I hope that, if you were curious about functional programming before, this was a helpful read. If you’re a functional programmer, and I got something wrong, please let me know…I’m still learning. For instance, I now better understand how recursive processes differ from linear recursive processes.</p>
+
+  </article>
+
+  
+
+  <a id='comments'></a>
+  <h3>21 Comments on "Functional Programming in JavaScript and Ruby"</h3>
+
+  
+  <div class='comment'>
+    <div><p>On the subject of <code class="highlighter-rouge">fold</code> and <code class="highlighter-rouge">map</code>: you should not implement them recursively in Javascript. They’re usually implemented recursively in FP languages because:</p>
+
+<ul>
+  <li>
+    <p>They work on (linked)lists/conses, which are inherently recursive structures. Javascript doesn’t have conses, only arrays. The slicings, array concatenations and single-element array creations of the recursive implementations generate <em>a lot</em> of garbage and straing the JS interpreters.</p>
+  </li>
+  <li>
+    <p>FP languages all implement tail-recursion optimization, and even when the functions aren’t tail-recursive they’re usually quite efficient at recursion. Javascript doesn’t implement tail-recursion optimization (which makes your tail-recursive fold – “fold-linear” – completely useless even though it would work in e.g. Scheme or SML) and is overall fairly bad at recursion (not as bad as PHP or VB, but still plenty bad).</p>
+  </li>
+</ul>
+
+<p>So you should probably implement them iteratively, it’s not that hard (and both are actually much shorter, unless you want to implement both <code class="highlighter-rouge">foldl</code> and <code class="highlighter-rouge">foldl1</code> as a single function in which case you get an ugly conditional.</p>
+
+<p>Likewise for Ruby by the way, don’t overuse recursion when you don’t have to.</p>
+
+<p>On a side note, since map and filter (and some other functions) have been implemented natively in Firefox 1.5+ as part of JS 1.6 (http://developer.mozilla.org/en/docs/New_in_JavaScript_1.6#Array_extras), I’d strongly suggest using the same names in your implementation, and testing if the methods exist beforehand so that you don’t overwrite them when they’re already available. I’m noting that they didn’t implement folds though. Shucks</p>
+</div>
+
+    
+    <span class='author'>Masklinn</span>
+    
+
+    <span class='date'>Fri Feb 23 15:24:36 2007</span>
+  </div>
+  
+  <div class='comment'>
+    <div><p>Masklinn,</p>
+
+<p>Good points.  I implemented map, fold, and find to test out my understanding of functional programming concepts, and the bits of SICP I’ve been reading – not for serious usage.  I did write them all iteratively at first, and they were shorter, but still very imperative…I wanted to stretch out a bit.  I guess I should’ve made that clearer.</p>
+
+<p>Still, implementing them iteratively is probably a good thing, especially if, like you said, we check first for their existence before clobbering a native implementation with our own attempt.  My thinking is that if more programmers are used to them, their thought patterns will shift a bit, maybe rise to a higher level of abstraction.  Which would be good for everyone.</p>
+
+<p>As far as map and filter in JS 1.6, I’d heard bits about that, and my excitement was tempered by the suspicion that IE 7 wouldn’t include them.  Turns out I was right…</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">];</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">[].</span><span class="nx">map</span><span class="p">)</span> <span class="p">{</span>   <span class="c1">// IE 7</span>
+    <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">map</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">mapFunc</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">alert</span><span class="p">(</span><span class="s2">"custom map implementation!"</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">mapped</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span> <span class="k">this</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">mapped</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">mapFunc</span><span class="p">(</span><span class="k">this</span><span class="p">[</span><span class="nx">i</span><span class="p">]));</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nx">mapped</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">[].</span><span class="nx">filter</span><span class="p">)</span> <span class="p">{</span>   <span class="c1">// IE 7</span>
+    <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">filter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">filterFunc</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">alert</span><span class="p">(</span><span class="s2">"custom filter implementation!"</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">matches</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span> <span class="k">this</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">filterFunc</span><span class="p">(</span><span class="k">this</span><span class="p">[</span><span class="nx">i</span><span class="p">]))</span> <span class="p">{</span>
+                <span class="nx">matches</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="k">this</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nx">matches</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">[].</span><span class="nx">fold</span><span class="p">)</span> <span class="p">{</span>   <span class="c1">// IE 7 and FFox 1.5 (I should upgrade...)</span>
+    <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">fold</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">base</span><span class="p">,</span> <span class="nx">foldFunc</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">alert</span><span class="p">(</span><span class="s2">"custom fold implementation!"</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">folded</span> <span class="o">=</span> <span class="nx">base</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span> <span class="k">this</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">folded</span> <span class="o">=</span> <span class="nx">foldFunc</span><span class="p">(</span><span class="nx">folded</span><span class="p">,</span> <span class="k">this</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nx">folded</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">squares</span> <span class="o">=</span> <span class="nx">a</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">i</span> <span class="o">*</span> <span class="nx">i</span><span class="p">;</span> <span class="p">});</span>
+<span class="nx">alert</span><span class="p">(</span><span class="nx">squares</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">evens</span> <span class="o">=</span> <span class="nx">a</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span> <span class="p">});</span>
+<span class="nx">alert</span><span class="p">(</span><span class="nx">evens</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">sum</span> <span class="o">=</span> <span class="nx">a</span><span class="p">.</span><span class="nx">fold</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">tally</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">tally</span> <span class="o">+</span> <span class="nx">i</span><span class="p">;</span> <span class="p">});</span>
+<span class="nx">alert</span><span class="p">(</span><span class="nx">sum</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>Thanks for your comments…</p>
+</div>
+
+    
+    <span class='author'>Dan Bernier</span>
+    
+
+    <span class='date'>Fri Feb 23 18:07:30 2007</span>
+  </div>
+  
+  <div class='comment'>
+    <div><p>Given isOdd as defined above, you can pass that method directly without the block, I don’t know that it is any easier.</p>
+
+<p>[1,2,3,4].find_all &amp;method(:isOdd)
+=&gt; [1, 3]</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>[1,2,3,4].find_all {</td>
+      <td>i</td>
+      <td>isOdd(i)}</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>is one character less.</p>
+</div>
+
+    
+    <span class='author'>Nathan</span>
+    
+
+    <span class='date'>Fri Feb 23 18:36:43 2007</span>
+  </div>
+  
+  <div class='comment'>
+    <div><p>JavaScript 1.5 includes these methods already (from the FF site):</p>
+
+<p>map()
+Creates a new array with the results of calling a provided function on every element in this array.</p>
+
+<p>filter()
+Creates a new array with all of the elements of this array for which the provided filtering function returns true.</p>
+
+<p>forEach()
+Calls a function for each element in the array.</p>
+
+<p>every()
+Returns true if every element in this array satisfies the provided testing function.</p>
+
+<p>some()
+Returns true if at least one element in this array satisfies the provided testing function.</p>
+
+<p>–</p>
+
+<p>There is no existing fold() in javascript, as far as I know. The same function is also referred to as “reduce” in some languages.</p>
+</div>
+
+    
+    <span class='author'>Victor</span>
+    
+
+    <span class='date'>Fri Feb 23 21:20:36 2007</span>
+  </div>
+  
+  <div class='comment'>
+    <div><p>It seems you have gotten some terminology mixed up. You’ve written that fold_recursive (foldr) generates a “recursive process” and fold_linear (foldl) a “linear recursive process”, but If I’m reading the SICP page correctly, foldr generates a linear recursive process and foldl a linear <em>iterative</em> process (i.e. the function is tail-recursive).
+(Also, note that you aren’t using the “base” argument in fold_linear).</p>
+
+<p>“Look at sum_w_proc and sum_w_block…sum_w_block is a bit clearer, isn’t it? But if you use blocks, you lose the ability to pass a function reference as a parameter.” &gt;</p>
+
+<p>Well, does this count?</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>[1, 2, 3].fold_w_block(0, &amp;lambda{</td>
+      <td>a,b</td>
+      <td>a+b})    # =&gt; 6</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>(Another small braino: you say that fold_w_block and fold_w_proc are based on fold_linear, but they’re actually foldr…)</p>
+</div>
+
+    
+    <span class='author'>
+      <a href="http://eigenclass.org">mfp</a>
+    </span>
+    
+
+    <span class='date'>Sat Feb 24 07:16:59 2007</span>
+  </div>
+  
+  <div class='comment'>
+    <div><p>I also used Javascript for an analysis of recursion. I did some timings of the various approaches you may be interested in taking a look at.</p>
+
+<p>http://www.kirit.com/Recursive%20rights%20and%20wrongs</p>
+
+<p>The basic outcome is that Javascript is absolutely terrible for recursion probably due to a very high function call overhead (which given that it must do a load of runtime analysis to support closures probably shouldn’t be all that surprising), at least in Microsoft’s implementation.</p>
+
+<p>Doing this sort of thing in C++ is interesting because the functor objects passed into things like std::transform (the C++ name for ‘map’) can store state. Clearly breaks the ‘no side effect’ rule, but can be used for some interesting effects.</p>
+
+<p>Personally I think Javascript is a great language to do this sort of experimenting on because nearly everybody has several pretty good implementations on their computer.</p>
+</div>
+
+    
+    <span class='author'>
+      <a href="http://www.kirit.com/">Kirit</a>
+    </span>
+    
+
+    <span class='date'>Sat Feb 24 07:38:49 2007</span>
+  </div>
+  
+  <div class='comment'>
+    <div><p>Just for the record:</p>
+
+<p>foldr and foldl in Ruby
+http://snippets.dzone.com/posts/show/3259</p>
+</div>
+
+    
+    <span class='author'>Trenton Miller</span>
+    
+
+    <span class='date'>Sat Feb 24 11:32:28 2007</span>
+  </div>
+  
+  <div class='comment'>
+    <div><p>Nathan,
+&gt; Given isOdd as defined above, you can pass that method directly without the block.</p>
+
+<p>My point was to show that Ruby doesn’t let you pass the method name like a regular parameter like JavaScript does, and I think your examples bear that point out…though I didn’t know about &amp;method(:sym).  How does it work?  Does it return a method pointer?  I don’t have my pickaxe handy…I’ll have to read up.</p>
+
+<p>mfp, allow me some time to consider your comment.  I was -pretty- sure I had my linear recursive and recursive straight, but I’ve been wrong before.  Like I said, I’m still learning.</p>
+
+<p>Kirit,
+&gt; Personally I think Javascript is a great language to do this sort of experimenting on because nearly everybody has several pretty good implementations on their computer.</p>
+
+<p>My thoughts exactly.  When I started the coding for this post, I was on lunch break from an ASP.Net class, so rather than install Ruby on the machine, I used the ubiquitous JavaScript.  I scanned your “Recursive rights and wrongs”, I’ll give it a more thorough read soon.</p>
+</div>
+
+    
+    <span class='author'>Dan Bernier</span>
+    
+
+    <span class='date'>Sat Feb 24 15:00:38 2007</span>
+  </div>
+  
+  <div class='comment'>
+    <div><p>&gt; My thinking is that if more programmers are used to them, their thought patterns will shift a bit, maybe rise to a higher level of abstraction. Which would be good for everyone.</p>
+
+<p>I do agree with that, even though nothing beats using actually functional languages to understand what Higher Order Functions are about (and have a hard time coding in Java after that)</p>
+
+<p>&gt; As far as map and filter in JS 1.6, I’d heard bits about that, and my excitement was tempered by the suspicion that IE 7 wouldn’t include them. Turns out I was right…</p>
+
+<p>‘course you are, I don’t think Opera and Safari implement JS 1.6 either. As a matter of fact, I’m pretty sure only Mozilla browsers implement them, for the moment at least.</p>
+
+<p>&gt; JavaScript 1.5 includes these methods already</p>
+
+<p>No, that’s in Javascript 1.6, the confusion comes from the fact that the first implementation of JS 1.6 is Firefox 1.5 (and Firefox 2.0 is the first restricted implementation of JS 1.7)</p>
+
+<p>&gt; It seems you have gotten some terminology mixed up. You’ve written that fold_recursive (foldr) generates a “recursive process” and fold_linear (foldl) a “linear recursive process”</p>
+
+<p>I think he meant that foldr was a recursive process executed in constant memory (which is true in a strict-evaluating tail-optimizing language, which javascript isn’t). His terminology is debatable, but that’s the feeling I got</p>
+
+<p>&gt; The basic outcome is that Javascript is absolutely terrible for recursion […] at least in Microsoft’s implementation.</p>
+
+<p>You’ll find that the other implementations fare no better. Maybe we’ll see a better support for recursion with the first JIT implementations (e.g. Adobe’s Tamarin http://www.mozilla.org/projects/tamarin/), but for the moment JS is one of those language which make you want to use FP, but forces you to be very careful about it.</p>
+
+<p>gt; My point was to show that Ruby doesn’t let you pass the method name like a regular parameter like JavaScript</p>
+
+<p>Yes, but that’s because just writing the name of the message in Ruby means that you’re sending the message to the objet (foo.bar is exactly the same as foo.send(:bar)) while in javascript the semantic is that of a “method call”: writing the method name (foo.bar) is not enough, you have to call it (foo.bar()) for it to be executed.</p>
+
+<p>&gt; How does it work?</p>
+
+<p>Taken straight from <code class="highlighter-rouge">ri Object#method</code>:</p>
+
+<p>Object#method
+     obj.method(sym)    =&gt; method
+————————————————————————
+     Looks up the named method as a receiver in <em>obj</em>, returning a
+     +Method+ object (or raising +NameError+). The +Method+ object acts
+     as a closure in <em>obj</em>’s object instance, so instance variables and
+     the value of +self+ remain available.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    class Demo
+      def initialize(n)
+        @iv = n
+      end
+      def hello()
+        "Hello, @iv = #{@iv}"
+      end
+    end
+
+    k = Demo.new(99)
+    m = k.method(:hello)
+    m.call   #=&amp;gt; "Hello, @iv = 99"
+
+    l = Demo.new('Fred')
+    m = l.method("hello")
+    m.call   #=&amp;gt; "Hello, @iv = Fred"
+</code></pre>
+</div>
+
+<p>&gt; Does it return a method pointer?</p>
+
+<p>It returns a Method object (http://www.ruby-doc.org/core/classes/Method.html) without calling it, while just using “foo.bar” calls the method object outright.</p>
+</div>
+
+    
+    <span class='author'>Masklinn</span>
+    
+
+    <span class='date'>Mon Feb 26 05:47:00 2007</span>
+  </div>
+  
+  <div class='comment'>
+    <div><p>&gt; I also used Javascript for an analysis of recursion. I did some timings of the various approaches you may be interested in taking a look at.
+&gt;
+&gt; http://www.kirit.com/Recursive%20rights%20and%20wrongs</p>
+
+<p>Kirit, the issue I have with your post is that the second category is far too closed: you consider that recursion is bad period, while the issue really is that most popular langages suck at recursion (e.g. in languages such as Erlang or Scheme recursion is not only a powerful tool but one that’s used often) (the fact that these languages usually lack iterative structures helps, too)</p>
+</div>
+
+    
+    <span class='author'>Masklinn</span>
+    
+
+    <span class='date'>Mon Feb 26 05:50:44 2007</span>
+  </div>
+  
+  <div class='comment'>
+    <div><p>&gt;Kirit, the issue I have with your post is that the second category is far too closed: you consider that recursion is bad period</p>
+
+<p>Is that really what I said? That certainly wasn’t the intent. It is certainly a tool I use often, but I’m ultimately careful with it because it can be a source of problems.</p>
+
+<p>Here is my summary:</p>
+
+<p>&gt;Recursion is a very powerful tool and it often enables us to spot algorithms that we wouldn’t otherwise see. We should however be very careful of using it in production software, especially where the parameters for the recursion ultimately derive from user input, or any other non-trusted source.</p>
+
+<p>In languages like Scheme (which I specifically mention) writing tail recursive functions is really writing a loop anyway because you know the language is going to convert it for you.</p>
+
+<p>The reason for writing the subject up in that was because I hadn’t seen anybody point to the obvious problems involved in exhausting the stack with recursive functions.</p>
+
+<p>Despite much hiding of heads in sand about the issue it is still an important consideration whenever recursion is used. That isn’t the same as saying don’t use it though.</p>
+</div>
+
+    
+    <span class='author'>
+      <a href="http://www.kirit.com/">Kirit</a>
+    </span>
+    
+
+    <span class='date'>Mon Feb 26 21:31:49 2007</span>
+  </div>
+  
+  <div class='comment'>
+    <div><p>&gt; In languages like Scheme (which I specifically mention) writing tail recursive functions is really writing a loop anyway because you know the language is going to convert it for you.</p>
+
+<p>I don’t think it’s “really like writing a loop anyway”, it’s the same to the machine, but you sure think recursively, not iteratively, even if the code is executed iteratively.</p>
+
+<p>Plus I didn’t limit my scope to iterative structures: while tail-recursive implementations clearly are the best, functional languages often have very powerful and efficient recursion abilities even on non tail-recursive functions. And they still don’t have any iterative structures.</p>
+</div>
+
+    
+    <span class='author'>Masklinn</span>
+    
+
+    <span class='date'>Tue Feb 27 05:06:16 2007</span>
+  </div>
+  
+  <div class='comment'>
+    <div><p>Masklinn, I know this sounds like we’re arguing, but I can’t bring myself to believe that we actually have any real difference of opinion here. We may be looking out over the landscape of software development in different directions, but we’re seeing the same features.</p>
+
+<p>I think we both agree that there are all sorts of algorithms that are easier to find and to understand in recursive forms.</p>
+
+<p>I think we also agree that it is better to write those recursive functions that are tail recursive so that they consume O(1) memory rather than O(n).</p>
+
+<p>The only other thing I say in my article is that sometimes non-tail recursive functions are better off re-written because the heap is bigger than the stack and is less likely to be exhausted.</p>
+
+<p>We’re writing for different audiences so of course our emphasis is in different places, but I don’t think we disagree anywhere.</p>
+
+<p>I’m going to have a think about adding some notes to my article to clarify where the issues I raise are of concern primarily to people using non-functional languages in case it can be mis-read.</p>
+</div>
+
+    
+    <span class='author'>
+      <a href="http://www.kirit.com/">Kirit</a>
+    </span>
+    
+
+    <span class='date'>Thu Mar  1 01:19:48 2007</span>
+  </div>
+  
+  <div class='comment'>
+    <div><p>Nice article!  Some how this filled in a lot of the blanks I had about jscript and functional prototyping.  Thanks for the good work…</p>
+</div>
+
+    
+    <span class='author'>justin</span>
+    
+
+    <span class='date'>Fri Mar  2 10:24:33 2007</span>
+  </div>
+  
+  <div class='comment'>
+    <div><p>mfp,</p>
+
+<p>I finally re-read the SICP page more carefully, and you’re right.  Thanks for the catch.  I updated the post, to avoid confusion.</p>
+
+<p>I also found <a href="http://en.wikipedia.org/wiki/Fold_(higher-order_function)" rel="nofollow">this Wikipedia article about foldr and foldl</a>, which helped me understand things.</p>
+
+<p>Thanks…</p>
+</div>
+
+    
+    <span class='author'>Dan Bernier</span>
+    
+
+    <span class='date'>Fri Mar  2 20:17:39 2007</span>
+  </div>
+  
+  <div class='comment'>
+    <div><p>You can pass around blocks in ruby as well, given that you define them as Proc objects:</p>
+
+<p><code>def a (b, &amp;block)
+  if block
+    block.call()
+  end
+end
+a("foo", &amp;Proc.new { puts "blah" })</code></p>
+</div>
+
+    
+    <span class='author'>Jordan Callicoat</span>
+    
+
+    <span class='date'>Thu Oct 18 16:17:49 2007</span>
+  </div>
+  
+  <div class='comment'>
+    <div><p>same as …
+a(“foo”) { puts “blah” }</p>
+</div>
+
+    
+    <span class='author'>Jordan Callicoat</span>
+    
+
+    <span class='date'>Thu Oct 18 16:19:23 2007</span>
+  </div>
+  
+  <div class='comment'>
+    <div><p>I.e., you can pass a method to a proc-taking method using the #to_proc method of Methods and Symbols. For example, given a foldl and foldr…</p>
+
+<p><code>
+class Array
+  def foldr(base, &amp;cat)
+    if self.empty?
+      base
+    else
+      cat.call(self.first, self[1..-1].foldr(base, &amp;cat))
+    end
+  end
+  def foldl(base, &amp;cat)
+    if self.empty?
+      base
+    else
+      self[1..-1].foldl(cat.call(base, self.first), &amp;cat)
+    end
+  end
+end
+</code></p>
+
+<p>…they can be called like…</p>
+
+<p><code>
+a.foldl(0, &amp;:-.to_proc())
+a.foldr(0, &amp;:-.to_proc())
+a.foldr(0, &amp;lambda { |x, y| x - y }.to_proc())
+</code></p>
+</div>
+
+    
+    <span class='author'>Jordan Callicoat</span>
+    
+
+    <span class='date'>Fri Oct 19 10:56:39 2007</span>
+  </div>
+  
+  <div class='comment'>
+    <div><p>another reason not to implement these functions recursively is the <a href="http://novemberborn.net/javascript/callstack-size" rel="nofollow">limited stack size in browsers</a>, especially Safari.</p>
+</div>
+
+    
+    <span class='author'>
+      <a href="http://remcoder.wordpress.com/">remcoder</a>
+    </span>
+    
+
+    <span class='date'>Wed Dec 19 14:47:29 2007</span>
+  </div>
+  
+  <div class='comment'>
+    <div><p>I think the second “iterative” fold function is a fold_right function and it’s different from the first. Also, in my opinion, the second function looks almost like a for-loop so you might just as well do so (a fold_left though):</p>
+
+<p>Array.prototype.fold_iterative = function(combineFunc,t) {
+    var a;
+    for(a=0;a&lt;this.length;a++) {
+        t=combineFunc(t,this[a]);
+    }
+    return t;
+}</p>
+</div>
+
+    
+    <span class='author'>
+      <a href="http://lwz.110mb.com">p1999</a>
+    </span>
+    
+
+    <span class='date'>Sun Jul 19 05:25:07 2009</span>
+  </div>
+  
+  <div class='comment'>
+    <div><p>Sorry for the last comment… it’s the first function that is fold_right, and the second function is supposed to do a fold_left, but doesn’t do it correctly. I think the it should be combineFunc(tally, this.first()) in the recursive call.</p>
+</div>
+
+    
+    <span class='author'>
+      <a href="http://lwz.110mb.com">p1999</a>
+    </span>
+    
+
+    <span class='date'>Sun Aug  2 22:22:25 2009</span>
+  </div>
+  
+
+  
+</div>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col  footer-col-1">
+        <h2 class="footer-heading">Invisible Blocks</h2>
+        <p class="text">for building invisible machines</p>
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/danbernier">
+              <span class="icon  icon--github">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/>
+                </svg>
+              </span>
+
+              <span class="username">danbernier</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/danbernier">
+              <span class="icon  icon--twitter">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809
+                  c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/>
+                </svg>
+              </span>
+
+              <span class="username">danbernier</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col  footer-col-3">
+        <p class="text">I make <a href='http://wordcram.org'>WordCram</a>, and try to make generative art in <a href='http://processing.org'>Processing</a>. I read a fair bit, and I try to write well. I co-organize <a href='http://newhaven.io'>NewHaven.IO</a> and <a href='http://newhavenrb.org'>NewHaven.rb</a>. This is my blog.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

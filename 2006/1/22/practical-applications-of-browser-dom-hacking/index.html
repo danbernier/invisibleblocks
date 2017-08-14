@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Practical Applications of Browser DOM Hacking | </title>
+    <meta name="description" content="I make <a href='http://wordcram.org'>WordCram</a>, and try to make generative art in <a href='http://processing.org'>Processing</a>. I read a fair bit, and I try to write well. I co-organize <a href='http://newhaven.io'>NewHaven.IO</a> and <a href='http://newhavenrb.org'>NewHaven.rb</a>. This is my blog.
+">
+
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="canonical" href="/2006/1/22/practical-applications-of-browser-dom-hacking/">
+
+    <script src="/javascript/main.js"></script>
+    <script src="/javascript/p5.min.js"></script>
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Invisible Blocks</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">What's all this, then?</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Practical Applications of Browser DOM Hacking</h1>
+    <p class="post-meta">Jan 22, 2006 • Dan Bernier</p>
+  </header>
+
+  <article class="post-content">
+    <p>I’ve been talking about hacking the browser’s DOM lately.  Now, here are some situations where this might be useful – but I’ll only lightly cover them, and leave further exploration up to you.  [Not because I’m trying to be clever and educational, but because Blogger strips out bunches of my HTML snips, even if I use escape chars.  If you have any suggestions, I’m all ears.]  Ok, practical applications of <a href="/2006/1/10/javascript-oo-and-function-pointers/">new</a> <a href="/2006/1/18/hacking-the-browsers-dom-for-fun/">knowledge</a>, here we go!</p>
+
+<h3 id="generate-a-table-of-contents">Generate a Table of Contents</h3>
+
+<p>Suppose we have some ordinary HTML:  some h1s, h2s, h3s, ps, and imgs.  Maybe we’ve thrown in some handy CSS, so it looks nice.  Now we want to generate a table of contents at the top of the page, so changes to the contents are automatically reflected above.  Let’s say headers make up the links in the table of contents.</p>
+
+<p>Using the getElements() function from <a href="/2006/1/18/hacking-the-browsers-dom-for-fun/">last post</a>, we can get an Array of all the header nodes:</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5</pre></td><td class="code"><pre><span class="kd">var</span> <span class="nx">headers</span> <span class="o">=</span> <span class="nx">getElements</span><span class="p">(</span>
+    <span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">node</span><span class="p">.</span><span class="nx">nodeName</span><span class="p">.</span><span class="nx">length</span> <span class="o">==</span> <span class="mi">2</span> <span class="o">&amp;&amp;</span>
+        <span class="nx">node</span><span class="p">.</span><span class="nx">nodeName</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"H"</span><span class="p">;</span>
+    <span class="p">});</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>Now, we can create a TOC that lists each header.  At the top of the page, create and insert a div to hold the table of contents – let’s call it tocDiv.  Then, for each header node, do two things:</p>
+
+<ol>
+  <li>Insert an anchor into tocDiv.  Set its href to <code class="highlighter-rouge">'#' + header.innerText</code>.  Add to it a text node (using <code class="highlighter-rouge">document.createTextNode()</code>) containing the header’s innerText.</li>
+  <li>Insert a named anchor right before the header, using <code class="highlighter-rouge">header.parentNode.insertBefore()</code>.  Set its name to <code class="highlighter-rouge">header.innerText</code>, so the TOC link points to it.</li>
+</ol>
+
+<p>Now, at the top of the page, you have a list of links…each one linking to a header tag below, with the same text as the header it links to.  You can do some neat formatting with CSS, too…for the tocDiv links, set their CSS class attribute to something like <code class="highlighter-rouge">'toc_' + header.nodeName</code>. Then add CSS class definitions for <code class="highlighter-rouge">toc_h1</code>, <code class="highlighter-rouge">toc_h2</code>, etc, to make it look more like an outline (you know, make the h1’s big and bold, the h2’s smaller, that kind of thing).  If you want to get really fancy, you can wrap each header node in an anchor that links up to the table of contents…even give it a title of “Back to Table of Contents” using <code class="highlighter-rouge">node.setAttribute("title", "Back to Table of Contents")</code>.</p>
+
+<h3 id="make-a-list-of-figures-and-put-captions-on-images">Make a “List of figures”, and put captions on images</h3>
+
+<p>This one’s also geared towards creating an outline, and will be pretty similar to the table of contents. Suppose you have images that aren’t there for decoration or formatting, but are supposed to convey information (diagrams, charts, etc).  Let’s assume that each has a meaningful alt tag.  We can create a list of figures that lists the title of the image (i.e., the alt text), and links to it.</p>
+
+<p>First, like we did for the table of contents, insert a node into the document to hold your list of figures.  Let’s say it’s a div called figList.</p>
+
+<p>Get all the images using <code class="highlighter-rouge">document.getElementsByTagName("img")</code>, and make a link pointing to each one. For each img node, again do two things:</p>
+
+<ol>
+  <li>Add an anchor to figList.  Get the img’s alt text via <code class="highlighter-rouge">img.getAttribute("alt")</code> – then use it for the anchor’s text, and set the anchor’s href to <code class="highlighter-rouge">'#' + altText</code>.</li>
+  <li>Insert a named anchor before each img node, and set its name to altText.</li>
+</ol>
+
+<p>Adding captions is really simple.  While you’re looping through the list of img nodes, insert a span after each one, with class set to “caption”.  Set the text to <code class="highlighter-rouge">"Figure " + i + ": " + altText</code>, and you’ve got automatically numbered caption images.</p>
+
+<h3 id="format-hyperlinks-based-on-where-they-lead">Format hyperlinks based on where they lead</h3>
+
+<p>I think I read a <a href="http://www.useit.com">Jakob Nielsen</a> article that suggested telling users before they click on a link that it’ll take them to another site.  Why not put an icon next to each link whose href starts with “http://”?</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7</pre></td><td class="code"><pre><span class="kd">var</span> <span class="nx">externalLinks</span> <span class="o">=</span> <span class="nx">getElements</span><span class="p">(</span>
+    <span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// nodeType == 1 means it's an Element</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">node</span><span class="p">.</span><span class="nx">nodeType</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="nx">node</span><span class="p">.</span><span class="nx">nodeName</span> <span class="o">==</span> <span class="s2">"A"</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">node</span><span class="p">.</span><span class="nx">getAttribute</span><span class="p">(</span><span class="s2">"href"</span><span class="p">).</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">"http://"</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">});</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>Using <a href="http://en.wikipedia.org/wiki/AJAX">AJAX</a>, you can get really crazy – make a server-side component that returns the file size of a given URL.  Now, grab all the links that point to a .pdf, .doc, .zip, or whatever, get the actual size from the server, and tell the user up-front how big the file is.</p>
+
+<h3 id="checking-our-sanity">Checking our sanity</h3>
+
+<p>Just to reiterate, we’re talking about changing the HTML structure at runtime.  Let’s step back a sec and talk about that.</p>
+
+<ol>
+  <li>The server delivers a stream of text to the browser.</li>
+  <li>The browser parses it and builds a “mental” model of what it says.</li>
+  <li>The browser renders some text and color on the screen based on that model.</li>
+</ol>
+
+<p>We’re talking about changing that model around at runtime, not the bytes sent to the browser.  This means that if you View &gt; Source on your page, you’ll see the original HTML, and none of the fancy nodes you added or rearranged.</p>
+
+<p>To help us see the havoc we’ve wreaked on the DOM, we can hack up a simple bookmarklet to dump out the DOM as HTML in a new window.  It’s as easy as this:</p>
+
+<ul>
+  <li>open a window</li>
+  <li>write out a big textarea to it (use <code class="highlighter-rouge">style="width:100%;height:95%"</code>)</li>
+  <li>fill the textarea with this window’s <code class="highlighter-rouge">document.documentElement.innerHTML</code></li>
+</ul>
+
+<h3 id="closing-thoughts">Closing thoughts</h3>
+
+<p>There are some general ideas that I’m using in many of these suggestions:</p>
+
+<ul>
+  <li>Use CSS classes, sometimes named after the node name, to keep your HTML-generating JavaScript clean.</li>
+  <li>Use plain text for named anchors, like header.innerText or img.getAttribute(“alt”).  In programming, we usually shy away from using plain text for identifiers, because it’s easy to mis-type…but if you’re generating all your identifiers, who cares?</li>
+  <li>Use function pointers as general-purpose selectors, instead of trying to support several types of limited selector.  For example, instead of getElementById(id), getElementNamed(tagName), and a hypothetical getElementWithAttribute(attrName, attrVal), why not just getElement(evalFunction)?</li>
+  <li>Two of these ideas made the assumption that your HTML is organized a certain way, which isn’t always possible.  If you have a page with lots of formatting (those pesky web designers), see if you can cordon off a section of clean HTML – just a div with an id – and only scan those nodes.  Another reason to use getElements() instead of the globally-scoped methods the browser provides.</li>
+</ul>
+
+<p>Use these techniques to come up with new and exciting ways to bend the browser’s DOM to your will.  Muahahahaha.</p>
+
+<p>For more info:
+<a href="http://krook.org/jsdom/">JavaDoc-style JavaScript</a>, pretty browser-independent
+<a href="http://www.mozilla.org/docs/dom/domref/dom_shortTOC.html">Gecko DOM reference</a> for Firefox
+<a href="http://en.wikipedia.org/wiki/AJAX">AJAX</a>, DOM Hacking’s most typical setting</p>
+
+  </article>
+
+  
+
+  <a id='comments'></a>
+  <h3>3 Comments on "Practical Applications of Browser DOM Hacking"</h3>
+
+  
+  <div class='comment'>
+    <div><p>It would be nice if you put it all together and showed the final examples.  As is it, I find the info interesting, but have no idea how to really use it.</p>
+</div>
+
+    
+    <span class='author'>
+      <a href="http://www.blogger.com/profile/8323039">e40</a>
+    </span>
+    
+
+    <span class='date'>Fri Jan 27 11:04:00 2006</span>
+  </div>
+  
+  <div class='comment'>
+    <div><p>Yeah, I originally tried to get lots more sample JavaScript into the post, but Blogger does some weird parsing things when you go between Edit HTML, Compose, Preview, and Posted modes.  I’ll try to get some samples hosted somewhere soon…I know I have the Table of Contents and the Image Auto Captioner built already.</p>
+</div>
+
+    
+    <span class='author'>
+      <a href="http://www.blogger.com/profile/6051054">Dan Bernier</a>
+    </span>
+    
+
+    <span class='date'>Fri Jan 27 19:06:00 2006</span>
+  </div>
+  
+  <div class='comment'>
+    <div><p>e40, I posted some examples at http://www.myjavaserver.com/~danbernier/invisibleBlocks/domHacking/domHacking.html …give them a look.</p>
+</div>
+
+    
+    <span class='author'>
+      <a href="http://www.blogger.com/profile/6051054">Dan Bernier</a>
+    </span>
+    
+
+    <span class='date'>Tue Mar  7 11:36:00 2006</span>
+  </div>
+  
+
+  
+</div>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col  footer-col-1">
+        <h2 class="footer-heading">Invisible Blocks</h2>
+        <p class="text">for building invisible machines</p>
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/danbernier">
+              <span class="icon  icon--github">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/>
+                </svg>
+              </span>
+
+              <span class="username">danbernier</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/danbernier">
+              <span class="icon  icon--twitter">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809
+                  c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/>
+                </svg>
+              </span>
+
+              <span class="username">danbernier</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col  footer-col-3">
+        <p class="text">I make <a href='http://wordcram.org'>WordCram</a>, and try to make generative art in <a href='http://processing.org'>Processing</a>. I read a fair bit, and I try to write well. I co-organize <a href='http://newhaven.io'>NewHaven.IO</a> and <a href='http://newhavenrb.org'>NewHaven.rb</a>. This is my blog.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

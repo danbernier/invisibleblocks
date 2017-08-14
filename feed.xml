@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Invisible Blocks</title>
+    <description>I make &lt;a href='http://wordcram.org'&gt;WordCram&lt;/a&gt;, and try to make generative art in &lt;a href='http://processing.org'&gt;Processing&lt;/a&gt;. I read a fair bit, and I try to write well. I co-organize &lt;a href='http://newhaven.io'&gt;NewHaven.IO&lt;/a&gt; and &lt;a href='http://newhavenrb.org'&gt;NewHaven.rb&lt;/a&gt;. This is my blog.
+</description>
+    <link>/</link>
+    <atom:link href="/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Mon, 14 Aug 2017 09:50:28 -0400</pubDate>
+    <lastBuildDate>Mon, 14 Aug 2017 09:50:28 -0400</lastBuildDate>
+    <generator>Jekyll v3.5.1</generator>
+    
+      <item>
+        <title>Book Review: A Mind at Play: How Claude Shannon Invented the Information Age</title>
+        <description>&lt;p&gt;Review: &lt;em&gt;A Mind at Play: How Claude Shannon Invented the Information Age,&lt;/em&gt; by
+Jimmy Soni and Rob Goodman. Simon &amp;amp; Schuster, July 2017.  Buy a copy from
+&lt;a href=&quot;http://www.powells.com/book/a-mind-at-play-9781476766683/62-0&quot;&gt;Powell’s&lt;/a&gt;,
+&lt;a href=&quot;http://www.indiebound.org/book/9781476766683&quot;&gt;Indiebound&lt;/a&gt;, or
+&lt;a href=&quot;https://www.amazon.com/Mind-Play-Shannon-Invented-Information/dp/1476766681/&quot;&gt;amazon&lt;/a&gt;;
+see if your friends are reading it at
+&lt;a href=&quot;https://www.goodreads.com/book/show/32919530-a-mind-at-play&quot;&gt;goodreads&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/2017/08/shannon-books.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This June brought a pleasant surprise: my effusive
+&lt;a href=&quot;/2013/12/31/book-review-the-information-by-james-gleick/&quot;&gt;review&lt;/a&gt; of James
+Gleick’s &lt;a href=&quot;http://www.indiebound.org/book/9781400096237&quot;&gt;&lt;em&gt;The Information&lt;/em&gt;&lt;/a&gt;
+brought me to the attention of Jimmy Soni, co-author of the new Claude Shannon
+biography, &lt;em&gt;A Mind at Play&lt;/em&gt;. He sent me an early copy of their book, gratis, in
+exchange for an honest review. Here it is.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;A Mind at Play&lt;/em&gt; is a warm introduction to Claude Shannon. Like any good
+biography, it contextualizes its subject and his work, while introducing us to
+the person as well.&lt;/p&gt;
+
+&lt;p&gt;It’s not a bad introduction to information theory, either. The authors admit
+they’re not mathematicians or engineers, but for that, the explanations aren’t
+bad. (I quibbled with some of their analogies, but not enough to go into here.)
+If you want a really thorough pop-science/pop-math treatment of information
+theory, pick up James Gleick’s &lt;a href=&quot;http://www.indiebound.org/book/9781400096237&quot;&gt;&lt;em&gt;The
+Information&lt;/em&gt;&lt;/a&gt;, but Soni and
+Goodman explain it more than well enough for a biography - if this book is all
+you read about it, you’ll understand what it’s about, why it’s important, and
+how Shannon contributed to it. Of course if you’re feeling more adventurous,
+Shannon’s &lt;a href=&quot;http://worrydream.com/refs/Shannon%20-%20A%20Mathematical%20Theory%20of%20Communication.pdf&quot;&gt;seminal
+paper&lt;/a&gt;
+is pretty readable, and it was expanded into &lt;a href=&quot;http://www.powells.com/book/mathematical-theory-of-communication-9780252725487/66-0&quot;&gt;a
+book&lt;/a&gt;
+with some contextualization for a broader audience.&lt;/p&gt;
+
+&lt;p&gt;The book’s title hints at its core conceit, that Shannon’s genius was rooted in
+his sense of play. It repeats the commonplace of the genius caricature: he
+works on whatever he wants, mostly impractical silly stuff, because his
+brilliance refuses to be bound by convention or common sense; he cares little for money, reward, or fame. They illustrate this with some
+entertaining stories - Shannon unicycling through the halls of MIT, or building a calculator that
+operates in Roman Numerals - but it feels like the authors try to wring too
+much out of it.  For me, it’s enough that Shannon was brilliant and playful;
+I don’t need to mine that for a grand theory of genius. (If you’d like to hear Shannon’s thoughts
+on creative thinking, I found &lt;a href=&quot;/assets/2017/08/ShannonCreativeThinking.pdf&quot;&gt;his notes for a lecture he gave&lt;/a&gt; on that subject.)&lt;/p&gt;
+
+&lt;p&gt;Some of the Shannon stories here are well-known - particularly the ones about
+his inventions, since the invention itself is most of the story anyway. But
+what is probably new from this book is that the authors interviewed Shannon’s
+family and colleagues, giving us a much deeper look at Shannon’s personality.
+For instance, Shannon was married twice, and each courtship lasted only months.
+Or that Shannon disliked to travel, and was not an adventurous eater, but when
+he was offered awards and lectures across the globe, he would accept, partly
+because his wife loved to see the world.&lt;/p&gt;
+
+&lt;p&gt;Bottom line: it’s a good look at part of the 20th century, at the math and
+technology that underpin the 21st, and one of the lives that shaped it.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 14 Aug 2017 00:00:00 -0400</pubDate>
+        <link>/2017/8/14/book-review-a-mind-at-play/</link>
+        <guid isPermaLink="true">/2017/8/14/book-review-a-mind-at-play/</guid>
+        
+        <category>Claude Shannon</category>
+        
+        <category>complexity</category>
+        
+        <category>information theory</category>
+        
+        
+        <category>Book Review</category>
+        
+        <category>Recommended Reading</category>
+        
+      </item>
+    
+      <item>
+        <title>&quot;How will design patterns make me a better coder?&quot;</title>
+        <description>&lt;p&gt;&lt;em&gt;In early 2012, &lt;a href=&quot;http://newhavenrb.org/&quot;&gt;New Haven Ruby&lt;/a&gt; did a book-club style reading of &lt;a href=&quot;https://www.amazon.com/Design-Patterns-Ruby-Russ-Olsen/dp/0321490452/&quot;&gt;Design Patterns in Ruby&lt;/a&gt;. During discussions, one question kept coming up: “How will design patterns make me a better coder?” I wrote up this answer, but for some reason, never sent it. Having recently discovered it, I thought I’d post it (after a bit of polishing), in the hopes that it’s useful.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;We’ve regularly been using this question to frame our patterns discussions. It’s a good question, and not just for getting us back on track when we’re out in the weeds. But every time it’s asked, I feel like we’re getting something wrong.&lt;/p&gt;
+
+&lt;p&gt;A design pattern itself won’t make you a better programmer. Knowing lots of them - when to use them, and their strengths and weaknesses - will. Design patterns are experience, coalesced and distilled.&lt;/p&gt;
+
+&lt;p&gt;Say you have an object, and other objects need to know when it changes. If you don’t know the Observer pattern, you have to think hard, and several steps ahead. You’ll make progress by trial-and-error. You’ll find the weaknesses of your design late in the game. If you &lt;em&gt;do&lt;/em&gt; know the Observer pattern, you get to pick from a handful of solutions, based on their strengths and weaknesses, and potential pitfalls - &lt;em&gt;before&lt;/em&gt; you build it. Knowing which patterns solve your problem is like a hacker-experience power-up.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The cliche about hardware stores and people over thirty is this: it’s a toy store. We go there to buy crap that looks cool, but that we don’t really need. Wrong. My Dad was not wandering Orchard Supply looking for crap; my Dad was looking for ideas. That’s what a great tool does: it inspires you to build.&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&quot;http://randsinrepose.com/archives/the-forums/&quot;&gt;&lt;em&gt;Rands in Repose&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Design patterns give you ideas. A pattern teaches you how to deal with one kind of complexity; it should tell you up-front which problem it solves. And since design is about trade-offs, it should tell you what trouble you’ll run into if you use it.&lt;/p&gt;
+
+&lt;p&gt;It’s like having a programming mentor. You explain your problem, and your mentor says, “I’ve seen that before. If you think about it like this, organize your code like this, that should solve it. If it doesn’t, maybe try moving this over to here. Careful, though - if you do this, you’ll want to watch out for…” Now imagine your mentor wrote down 30 of those discussions. That’s a design patterns book. Learning those patterns makes it like you’ve solved the problem 30 times before.&lt;/p&gt;
+
+&lt;p&gt;Design patterns give you ideas, and I think that’s partly why they get over-used. They’re inspiring - when you read about a tidy solution to a common problem, and pitfalls to watch out for, you want to try it out! And I think trying it out is how many of us really learn the pattern. But this should be deliberate practice, not code destined for production.&lt;/p&gt;
+
+&lt;p&gt;If you read about a pattern, and think “that’s great, but I don’t have that problem,” stop and correct yourself: you don’t have that problem &lt;em&gt;yet&lt;/em&gt;.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Every reader should ask himself periodically “Toward what end, toward what end?” – but do not ask it too often lest you pass up the fun of programming for the constipation of bittersweet philosophy.&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&quot;http://mitpress.mit.edu/sicp/full-text/book/book-Z-H-5.html#%_chap_Temp_2&quot;&gt;Alan Perlis, Foreward to SICP&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+</description>
+        <pubDate>Mon, 13 Jun 2016 14:00:00 -0400</pubDate>
+        <link>/2016/6/13/why-design-patterns/</link>
+        <guid isPermaLink="true">/2016/6/13/why-design-patterns/</guid>
+        
+        
+        <category>Software Thinking</category>
+        
+        <category>Design Patterns</category>
+        
+      </item>
+    
+      <item>
+        <title>Fractal Circles</title>
+        <description>&lt;p&gt;In August of 2014, I participated in &lt;a href=&quot;http://grovenewhaven.com/art-of-code-regenerate/&quot;&gt;Re:GENERATE&lt;/a&gt;, a show featuring computer-generated art. I made, among other things, a generative series for the event, that I named Fractal Circles.&lt;/p&gt;
+
+&lt;div class=&quot;gallery&quot;&gt;
+  &lt;img src=&quot;/assets/2015/12/02.png&quot; /&gt;
+  &lt;img src=&quot;/assets/2015/12/03.png&quot; /&gt;
+  &lt;img src=&quot;/assets/2015/12/04.png&quot; /&gt;
+  &lt;img src=&quot;/assets/2015/12/05.png&quot; /&gt;
+  &lt;img src=&quot;/assets/2015/12/06.png&quot; /&gt;
+  &lt;img src=&quot;/assets/2015/12/07.png&quot; /&gt;
+  &lt;img src=&quot;/assets/2015/12/08.png&quot; /&gt;
+  &lt;img src=&quot;/assets/2015/12/09.png&quot; /&gt;
+  &lt;img src=&quot;/assets/2015/12/10.png&quot; /&gt;
+  &lt;img src=&quot;/assets/2015/12/11.png&quot; /&gt;
+  &lt;img src=&quot;/assets/2015/12/12.png&quot; /&gt;
+  &lt;img src=&quot;/assets/2015/12/13.png&quot; /&gt;
+  &lt;img src=&quot;/assets/2015/12/14.png&quot; /&gt;
+&lt;/div&gt;
+
+&lt;p&gt;It’s a simple recursive algorithm over a region of the sketch:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Should we recurse?
+    &lt;ul&gt;
+      &lt;li&gt;Yes, recurse:
+        &lt;ul&gt;
+          &lt;li&gt;Is the region we’re looking at wider than tall? (The first time, this is the whole sketch.)
+            &lt;ul&gt;
+              &lt;li&gt;Yes: split it into halves, vertically, and recurse into it.&lt;/li&gt;
+              &lt;li&gt;No: split it into halves, horizontally, and recurse into it.&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;No, stop recursing:
+        &lt;ul&gt;
+          &lt;li&gt;Should we draw a circle in this region?
+            &lt;ul&gt;
+              &lt;li&gt;Yes: pick a circle type (solid or hollow) and draw it.&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This generates a surprisingly wide variety of shapes, some very natural-looking.&lt;/p&gt;
+
+&lt;p&gt;There are three open-ended questions:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Should we recurse?&lt;/li&gt;
+  &lt;li&gt;Should we draw a circle?&lt;/li&gt;
+  &lt;li&gt;What kind of circle?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If you decide to recurse every other time, and always draw a circle, and alternate the circles types, you get this image, which I made to help explain:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/2015/12/explanation.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If you let yourself pick the &lt;em&gt;type&lt;/em&gt; of circle randomly, you’re left with two questions: whether to recurse, and whether to draw a circle. Answering those questions randomly, and controlling their probability, can generate whole families of images.&lt;/p&gt;
+
+&lt;p&gt;Here are 144 tiny fractal circle images. The probability of recursing decreases as we move from left to right, and the probability of drawing a circle increases as we move from top to bottom.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/2015/12/orthogonalities.png&quot; class=&quot;box-shadow&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Here’s a &lt;a href=&quot;http://p5js.org/&quot;&gt;p5.js&lt;/a&gt; version of it, where the probabilty-to-recurse increases as the hour passes, and the probability-to-draw increases as the minute passes:&lt;/p&gt;
+
+&lt;div id=&quot;sketchHolder&quot; class=&quot;box-shadow&quot;&gt;&lt;/div&gt;
+
+&lt;script id=&quot;sketchSource&quot;&gt;
+function Circle(sizePercent) {
+  this.strokeWeightPercentOfSize = sizePercent;
+
+  this.draw = function(top, left, size) {
+    var halfSize = size * 0.5;
+    var centerX = top + halfSize;
+    var centerY = left + halfSize;
+    var outerSize = size * 0.95;
+    var innerSize = size * (1-this.strokeWeightPercentOfSize);
+    
+    ellipseMode(CENTER);
+    fill(0);
+    ellipse(centerX, centerY, outerSize, outerSize);
+    fill(255);
+    ellipse(centerX, centerY, innerSize, innerSize);
+  }
+}
+
+function setup() {
+  createCanvas(680, 720);
+  $('#sketchHolder').append($('#defaultCanvas0'));
+
+  noStroke();
+  frameRate(2);
+};
+
+function draw() {
+  pStopRecursing = norm(minute(), 59, 0); //0.35;
+  pDrawACircle = norm(second(), 0, 59); // 0.15;
+
+  background(255);
+  recurse(20, 20, 680-40, 680-40);
+
+  fill(0);
+  textAlign(CENTER);
+  text(&quot;Current time: &quot; + nf(hour(), 2) + &quot;:&quot; + nf(minute(), 2) + &quot;:&quot; + nf(second(), 2), width/2, height-60);
+  text(&quot;Chance of drawing: &quot; + second() + &quot;/60 = &quot; + nf(pDrawACircle, 1, 3), width/2, height-40);
+  text(&quot;Chance of recursing: &quot; + minute() + &quot;/60 = &quot; + nf((1-pStopRecursing), 1, 3), width/2, height-20);
+};
+
+var pickACircle = (function() {
+  var thin = new Circle(0.15);
+  var thick = new Circle(1 - (0.85 * 0.5));
+  var solid = new Circle(1);
+  var choices = [thick, solid];
+
+  return function() {
+    return choices[floor(random(choices.length))];
+  }
+})();
+
+var pStopRecursing = 0.35;
+var pDrawACircle = 0.15;
+
+function recurse(left, top, right, bottom) {
+  var minSize = 12;
+  var wide = right - left;
+  var high = bottom - top;
+  
+  if (random(1) &lt; pStopRecursing || wide &lt; minSize || high &lt; minSize) {
+    if (random(1) &lt; pDrawACircle) {
+      pickACircle().draw(left, top, wide);
+    }
+  } 
+  else {
+    if (wide &gt;= high) {
+      var middle = (right + left) * 0.5;
+      recurse(left, top, middle, bottom);
+      recurse(middle, top, right, bottom);
+    } else {
+      var middle = (top + bottom) * 0.5;
+      recurse(left, top, right, middle);
+      recurse(left, middle, right, bottom);
+    }
+  }
+}
+&lt;/script&gt;
+
+</description>
+        <pubDate>Sat, 12 Dec 2015 17:00:00 -0500</pubDate>
+        <link>/2015/12/12/fractal-circles/</link>
+        <guid isPermaLink="true">/2015/12/12/fractal-circles/</guid>
+        
+        
+        <category>Generative Art</category>
+        
+        <category>Processing</category>
+        
+      </item>
+    
+      <item>
+        <title>How to Enable Mouse Wheel Support in controlP5 on Processing 2.2</title>
+        <description>&lt;p&gt;I’m finally using &lt;a href=&quot;http://www.sojamo.de/libraries/controlP5/&quot;&gt;controlP5&lt;/a&gt; in earnest, and I noticed that two-finger trackpad scrolling over a knob didn’t dial the knob, like I’d hoped it would. (Thanks to &lt;a href=&quot;http://www.benjaminoakes.com/&quot;&gt;Ben Oakes&lt;/a&gt;, again, for showing me - just yesterday afternoon - that Ubuntu’s volume icon supports this. That was the trigger that got me wondering about this.)&lt;/p&gt;
+
+&lt;p&gt;It turns out controlP5 &lt;em&gt;does&lt;/em&gt; let you turn knobs with the mouse wheel, but, for some reason, it’s disabled by default. There’s an example sketch, “ControlP5mouseWheel”, that shows how to enable it, but it doesn’t work for me with Processing 2.2. The problematic part is the &lt;code class=&quot;highlighter-rouge&quot;&gt;addMouseWheelListener()&lt;/code&gt; callback that mucks with &lt;code class=&quot;highlighter-rouge&quot;&gt;java.awt.event&lt;/code&gt; stuff.&lt;/p&gt;
+
+&lt;p&gt;Here’s a Processing 2.2-style mouseWheel callback event that gets us back to turning knobs by scrolling:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;table style=&quot;border-spacing: 0&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot; style=&quot;text-align: right&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;c1&quot;&gt;// When working in desktop mode, you can add mousewheel&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// support for controlP5 by using Processing 2.2's built-in&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// support:&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;mouseWheel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MouseEvent&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// Processing's `getCount()` returns 1 when the mouseWheel&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// is rotated down, and -1 when the mouseWheel is rotated&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// up. Natural scrolling reverses this, so you need to&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// negate the count value. Try removing the negation, if&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// the scrolling is backwards for you.&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;cp5&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setMouseWheelRotation&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getCount&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;While I was at it, I noticed that controlP5 is still hosted on the retired google-code platform, &lt;a href=&quot;https://github.com/danbernier/controlp5/&quot;&gt;so I exported it to my github account&lt;/a&gt;. I expect &lt;a href=&quot;http://www.sojamo.de/&quot;&gt;Andreas&lt;/a&gt; will export it to his own soon enough, and I can fork his version then, and merge in &lt;a href=&quot;https://github.com/danbernier/controlp5/commit/46e173c6fa51ba70a1bace80e492f343a6dc9862?w=1&quot;&gt;my update to the ControlP5mouseWheel example sketch&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 07 May 2015 07:23:08 -0400</pubDate>
+        <link>/2015/5/7/how-to-enable-mouse-wheel-support-in-controlp5-on-processing-2-2/</link>
+        <guid isPermaLink="true">/2015/5/7/how-to-enable-mouse-wheel-support-in-controlp5-on-processing-2-2/</guid>
+        
+        
+        <category>Open Source</category>
+        
+        <category>Processing</category>
+        
+      </item>
+    
+      <item>
+        <title>NewHaven.IO goes to the White House</title>
+        <description>&lt;p&gt;President Obama has launched an initiative called TechHire.&lt;/p&gt;
+
+&lt;p&gt;You can read &lt;a href=&quot;https://www.whitehouse.gov/issues/technology/techhire&quot;&gt;the official version&lt;/a&gt;, but here’s my summary: there are lots of well-paying technology jobs, and not enough people to fill them. Those jobs could bring lower-income families firmly into the middle class, if only they could get the right skills. The jobs don’t necessarily require a four-year degree; programs like &lt;a href=&quot;http://flatironschool.com/&quot;&gt;The Flatiron School&lt;/a&gt; and &lt;a href=&quot;https://generalassemb.ly/&quot;&gt;General Assembly&lt;/a&gt; teach people to program in months, and it seems to work: nearly all graduates are quickly hired. How can we get more people trained like this?&lt;/p&gt;
+
+&lt;p&gt;Part of the TechHire plan is to support “local tech community gatherings who can welcome these new students to their tech meet-ups.” They’ve &lt;a href=&quot;http://blog.meetup.com/new-tech-hire-initiative/&quot;&gt;partnered with Meetup.com&lt;/a&gt;, and Meetup reached out to growing tech-oriented Meetups - including &lt;a href=&quot;http://newhaven.io&quot;&gt;NewHaven.IO&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Tomorrow, they’re holding a &lt;a href=&quot;https://www.whitehouse.gov/blog/2015/04/14/friday-tech-meetup-white-house-0&quot;&gt;Tech Meetup at the White House&lt;/a&gt;, for the organizers of about 30 tech meetups to share stories, and learn from each other - and NewHaven.IO will be there. If you’d like, you can watch &lt;a href=&quot;http://www.whitehouse.gov/live&quot;&gt;a livestream of the event&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;As one of NewHaven.IO’s founders and organizers, I’m happy that we’ve gained enough traction to be noticed. As the current organizer of &lt;a href=&quot;http://www.meetup.com/newhavenio/&quot;&gt;the NewHaven.io Meetup.com group&lt;/a&gt;, I’m excited to attend the White House tech meetup. This is my first time running such a successful volunteer organization, so, while I’m ready to share the lessons we’ve learned, I’m eager to learn from the other organizers, to hear what’s worked for them, and how they’ve served their community, so we can make NewHaven.IO even better.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 16 Apr 2015 10:54:05 -0400</pubDate>
+        <link>/2015/4/16/newhaven-io-goes-to-the-white-house/</link>
+        <guid isPermaLink="true">/2015/4/16/newhaven-io-goes-to-the-white-house/</guid>
+        
+        
+        <category>New Haven Ruby</category>
+        
+        <category>NewHaven.IO</category>
+        
+      </item>
+    
+      <item>
+        <title>Circle Pictures Redux</title>
+        <description>&lt;p&gt;Back in December, I posted some images I’d made by dropping non-overlapping circles on an image, larger or smaller based on the brightness of the underlying pixel at that spot. I called them &lt;a href=&quot;/2013/12/17/circle-pictures/&quot;&gt;Circle Pictures&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;At the time, I was happiest with the black-and-white images; I liked the color ones less. I think I’ve figured out how to make the color images work better; a lot of it comes down to picking the right kind of image to start with. (High-contrast images of recognizable objects works well, especially &lt;a href=&quot;https://www.google.com/search?q=isolated+banana&amp;amp;tbm=isch&quot;&gt;isolated images&lt;/a&gt;.) I also used a broader range of circle sizes, added borders, and played with how the circle size is decided: based on brightness, or saturation, or the amount of blue…any data in the pixel is fair game. The code is basically the same, so I won’t bother re-posting it.&lt;/p&gt;
+
+&lt;p&gt;Here are some of the results, including a repeat of the sunflower images. I’ll be showing prints of some of these, and some others like them, at &lt;a href=&quot;http://www.cwos.org/&quot;&gt;City Wide Open Studios&lt;/a&gt; at the Armory space, October 11 and 12, if you’d like to see them up-close.&lt;/p&gt;
+
+&lt;div class=&quot;gallery&quot;&gt;
+  &lt;img src=&quot;/assets/2014/09/sunflower2.png&quot; /&gt;
+  &lt;img src=&quot;/assets/2014/09/sunflower.png&quot; /&gt;
+  &lt;img src=&quot;/assets/2014/09/tree.png&quot; /&gt;
+  &lt;img src=&quot;/assets/2014/09/gorilla.png&quot; /&gt;
+  &lt;img src=&quot;/assets/2014/09/seaturtle.png&quot; /&gt;
+  &lt;img src=&quot;/assets/2014/09/underwater.png&quot; /&gt;
+  &lt;img src=&quot;/assets/2014/09/tropical-fish.png&quot; /&gt;
+  &lt;img src=&quot;/assets/2014/09/seahorse.png&quot; /&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Here are the source images:&lt;/p&gt;
+
+&lt;div class=&quot;gallery&quot;&gt;
+  &lt;img src=&quot;/assets/2014/09/sunflower21.png&quot; /&gt;
+  &lt;img src=&quot;/assets/2014/09/sunflower1.png&quot; /&gt;
+  &lt;img src=&quot;/assets/2014/09/tree1.png&quot; /&gt;
+  &lt;img src=&quot;/assets/2014/09/gorilla1.png&quot; /&gt;
+  &lt;img src=&quot;/assets/2014/09/seaturtle1.png&quot; /&gt;
+  &lt;img src=&quot;/assets/2014/09/underwater1.png&quot; /&gt;
+  &lt;img src=&quot;/assets/2014/09/tropical-fish1.png&quot; /&gt;
+  &lt;img src=&quot;/assets/2014/09/seahorse1.png&quot; /&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;image-credits&quot;&gt;Image Credits&lt;/h2&gt;
+
+&lt;p&gt;The tree is my least-favorite outcome, but the source image is from &lt;a href=&quot;http://johncbuchanan.blogspot.com/2011/11/oak-tree.html&quot;&gt;John Buchanan’s poetry site&lt;/a&gt;. The gorilla source image is from &lt;a href=&quot;http://www.rwanda-direct.com/rwanda-gorillas/&quot;&gt;what looks like a Rwanda tourism site&lt;/a&gt;. The sea turtle source image is by &lt;a href=&quot;http://www.flickr.com/photos/digivangelist/425448593/&quot;&gt;digivangelist&lt;/a&gt;. The turtle with fish source image is from &lt;a href=&quot;http://www.wallpapersak.com/&quot;&gt;wallpapersak.com&lt;/a&gt;. The yellow striped fish source image is by &lt;a href=&quot;http://farzinphoto.com/&quot;&gt;FarzinPhoto&lt;/a&gt;. The sea horse source image is from this &lt;a href=&quot;http://newswatch.nationalgeographic.com/2013/11/26/why-does-the-seahorse-have-its-odd-head-mystery-solved/&quot;&gt;National Geographic article&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt; &lt;/p&gt;
+</description>
+        <pubDate>Mon, 29 Sep 2014 22:35:34 -0400</pubDate>
+        <link>/2014/9/29/circle-pictures-redux/</link>
+        <guid isPermaLink="true">/2014/9/29/circle-pictures-redux/</guid>
+        
+        
+        <category>Generative Art</category>
+        
+        <category>Processing</category>
+        
+      </item>
+    
+      <item>
+        <title>Public Domain Pictures</title>
+        <description>&lt;p&gt;Maybe old news, but news to me: 4 collections of photos in the public domain, and they’re not too bad:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.publicdomainpictures.net/&quot;&gt;PublicDomainPictures.net&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://public-domain-photos.com/&quot;&gt;Public-Domain-Photos.com&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.photos-public-domain.com/&quot;&gt;Photos-Public-Domain.com&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.public-domain-image.com/&quot;&gt;Public-Domain-Image.com&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Now this blog posts looks like it was generated by a spam-bot. :(&lt;/p&gt;
+
+&lt;p&gt;I haven’t delved too deeply into these yet, but I will be in the future.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 12 Jul 2014 18:09:24 -0400</pubDate>
+        <link>/2014/7/12/public-domain-pictures/</link>
+        <guid isPermaLink="true">/2014/7/12/public-domain-pictures/</guid>
+        
+        
+        <category>Bookmark</category>
+        
+        <category>Generative Art</category>
+        
+        <category>Processing</category>
+        
+      </item>
+    
+      <item>
+        <title>&quot;Computerless&quot; Programming, via Golan Levin</title>
+        <description>&lt;p&gt;Golan Levin has posted his &lt;a href=&quot;http://www.flong.com/blog/2014/computing-without-computers/&quot;&gt;notes from the Code+Ed Session&lt;/a&gt; on 2014-06-10 at the Eyeo Festival, on computing without computers.&lt;/p&gt;
+
+&lt;p&gt;The post is basically a list of links, but it’s a great starting place for algorithmic drawing - a whole section is dedicated to it. Instead of using math and software to generate drawings, people use pen and paper, or tape and floor.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 26 Jun 2014 09:29:52 -0400</pubDate>
+        <link>/2014/6/26/computerless-programming-via-golan-levin/</link>
+        <guid isPermaLink="true">/2014/6/26/computerless-programming-via-golan-levin/</guid>
+        
+        
+        <category>Bookmark</category>
+        
+        <category>Generative Art</category>
+        
+      </item>
+    
+      <item>
+        <title>&quot;A Little Ruby, a Lot of Objects,&quot; back on line</title>
+        <description>&lt;p&gt;When I was first learning Ruby, one of the resources that helped me most was &lt;a href=&quot;http://www.exampler.com&quot;&gt;Brian Marick’s&lt;/a&gt; “A Little Ruby, a Lot of Objects.” It’s modeled after &lt;a href=&quot;http://mitpress.mit.edu/books/little-schemer&quot;&gt;The Little Schemer&lt;/a&gt; (or, if you’re older, &lt;a href=&quot;http://books.google.com/books/about/The_little_LISPer.html?id=vbFQAAAAMAAJ&quot;&gt;The Little LISPer&lt;/a&gt;), but it uses Ruby, and teaches the core ideas of object-oriented programming in a way that helped me, even after I’d been doing OOP for 6 years. (I’m not surprised that his newer book, &lt;a href=&quot;https://leanpub.com/fp-oo&quot;&gt;Functional Programming for the Object-Oriented Programmer&lt;/a&gt;, is just as illuminating.) The only thing I didn’t like was that it stopped after only 55 pages.&lt;/p&gt;
+
+&lt;p&gt;My team is about to welcome a new junior intern, and when &lt;a href=&quot;http://www.benjaminoakes.com&quot;&gt;Ben&lt;/a&gt; asked me for any learning resources I thought we should send, I suggested “A Little Ruby.” I have the original PDFs, but we were planning to send an email with URLs, and that’s when I realized that the book’s site, visibleworkings.com/little-ruby, was down.&lt;/p&gt;
+
+&lt;p&gt;I asked Brian whether I could host the files, and &lt;a href=&quot;https://twitter.com/marick/status/443705433388118017&quot;&gt;he agreed&lt;/a&gt; (thanks again!), so here they are:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;A Little Ruby, A Lot of Objects&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;/assets/2014/03/FrontMatter.pdf&quot;&gt;Front Matter&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;“My goal is to teach you a way to think about computation, to show you how far you can take a simple idea: that all computation consists of sending messages to objects.”&lt;/p&gt;
+
+&lt;p&gt;“The real reason for reading this book is that the ideas in it are &lt;em&gt;neat&lt;/em&gt;.”&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;/assets/2014/03/Chapter1.pdf&quot;&gt;Chapter 1: We’ve Got Class…&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;The First Message: &lt;em&gt;Computation is sending messages to objects.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;The Second Message: &lt;em&gt;Message names describe the desired result, independently of the object that provides it.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;The Third Message: &lt;em&gt;Classes provide interface and hide representation.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;/assets/2014/03/Chapter2.pdf&quot;&gt;Chapter 2: …We Get It From Others&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;The Fourth Message: &lt;em&gt;Protocols group messages into coherent sets. If two different classes implement the same protocol, programs that depend only on that protocol can use them interchangeably.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;The Fifth Message: &lt;em&gt;Classes define protocols for their subclasses.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;The Sixth Message: &lt;em&gt;If a class and its superclass have methods with the same name, the class’s methods take precedence.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;The Seventh Message: &lt;em&gt;Instance variables are always found in&lt;/em&gt; self.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;/assets/2014/03/Chapter3.pdf&quot;&gt;Chapter 3: Turtles All The Way Down&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;The Eighth Message: &lt;em&gt;Classes are objects with a protocol to create other objects&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;The Ninth Message: &lt;em&gt;Methods are found by searching through lists of objects.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;The Tenth Message: &lt;em&gt;In computation, simple rules combine to allow complex possibilities&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;The Eleventh Message: &lt;em&gt;Everything inherits from &lt;code class=&quot;highlighter-rouge&quot;&gt;Object&lt;/code&gt;.&lt;/em&gt;&lt;/p&gt;
+</description>
+        <pubDate>Wed, 12 Mar 2014 09:56:07 -0400</pubDate>
+        <link>/2014/3/12/a-little-ruby-a-lot-of-objects-back-on-line/</link>
+        <guid isPermaLink="true">/2014/3/12/a-little-ruby-a-lot-of-objects-back-on-line/</guid>
+        
+        <category>Ruby</category>
+        
+        
+        <category>Book Review</category>
+        
+        <category>Programming</category>
+        
+        <category>Recommended Reading</category>
+        
+      </item>
+    
+      <item>
+        <title>Two Copyright-Free Photo Collections</title>
+        <description>&lt;p&gt;&lt;a href=&quot;/2013/12/17/circle-pictures/&quot;&gt;I’m always looking for interesting photos to hack on&lt;/a&gt;, so I was glad to find these two sources of free images, both via &lt;a href=&quot;http://vormplus.be/blog/&quot;&gt;Vormplus&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://nos.twnsnd.co/&quot;&gt;New Old Stock&lt;/a&gt;: “vintage photos from the public archives free of known copyright restrictions.” Old photos with the fuzzy haze you’d expect. Some have no indication of age besides the color fading, but &lt;a href=&quot;http://24.media.tumblr.com/70ef2f0668872fcc6df9f84b6f55e91b/tumblr_mztrt3pFAO1sfie3io1_1280.jpg&quot;&gt;others&lt;/a&gt; have elements that clearly mark them as old.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://unsplash.com/&quot;&gt;Unsplash&lt;/a&gt;: “Free (do whatever you want) hi-resolution photos.  10 new photos every 10 days.” You can subscribe via email, too.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 03 Mar 2014 11:39:53 -0500</pubDate>
+        <link>/2014/3/3/two-copyright-free-photo-collections/</link>
+        <guid isPermaLink="true">/2014/3/3/two-copyright-free-photo-collections/</guid>
+        
+        
+        <category>Generative Art</category>
+        
+        <category>Processing</category>
+        
+      </item>
+    
+  </channel>
+</rss>

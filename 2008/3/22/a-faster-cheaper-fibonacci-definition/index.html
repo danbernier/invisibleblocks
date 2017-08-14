@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>A Faster, Cheaper Fibonacci Definition | </title>
+    <meta name="description" content="I make <a href='http://wordcram.org'>WordCram</a>, and try to make generative art in <a href='http://processing.org'>Processing</a>. I read a fair bit, and I try to write well. I co-organize <a href='http://newhaven.io'>NewHaven.IO</a> and <a href='http://newhavenrb.org'>NewHaven.rb</a>. This is my blog.
+">
+
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="canonical" href="/2008/3/22/a-faster-cheaper-fibonacci-definition/">
+
+    <script src="/javascript/main.js"></script>
+    <script src="/javascript/p5.min.js"></script>
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Invisible Blocks</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">What's all this, then?</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">A Faster, Cheaper Fibonacci Definition</h1>
+    <p class="post-meta">Mar 22, 2008 • Dan Bernier</p>
+  </header>
+
+  <article class="post-content">
+    <p>The <a href="http://en.wikipedia.org/wiki/Fibonacci_number">Fibonacci sequence</a> is one of the best-known number sequences:</p>
+<ol>
+<li>1</li>
+<li>1</li>
+<li>2</li>
+<li>3</li>
+<li>5</li>
+<li>8</li>
+<li>13</li>
+<li>21...</li>
+</ol>
+
+<p>Each Fibonacci number above 1 is defined as the sum of the previous two Fibonacci numbers:</p>
+
+<p>F(0) = 0
+F(1) = 1
+F(n) = F(n-1) + F(n-2)</p>
+
+<p>Just for fun, here’s another way to specify the Fibonacci sequence.  It takes fewer calculations, especially for large numbers.  The math is basic algebra substitutions.  This could be old news – if you’ve seen this before, I’d love to hear from you.</p>
+
+<h4 id="deriving-the-new-fibonacci-definition">Deriving the new Fibonacci definition</h4>
+
+<p>Before we begin, let’s notate F(n) as Fn, and F(n-1) as Fn<sub>1</sub> – it’ll make everything tidier.</p>
+
+<p>That Fn<sub>1</sub> + Fn<sub>2</sub> part, to me, always begged for substitution.  Fn<sub>1</sub> should equal Fn<sub>2</sub> + Fn<sub>3</sub>, right?  What if we re-write Fn in terms of Fn<sub>1</sub>’s definition?  What might that lead to?</p>
+
+<p>Fn = Fn<sub>1</sub> + Fn<sub>2</sub>
+Fn<sub>1</sub> = Fn<sub>2</sub> + Fn<sub>3</sub>
+Fn = Fn<sub>2</sub> + Fn<sub>2</sub> + Fn<sub>3</sub>
+Fn = 2Fn<sub>2</sub> + Fn<sub>3</sub>, as long as n &gt; 2.</p>
+
+<p>Pretty basic: substitute the definition for Fn<sub>1</sub> back into the definition for Fn, and simplify.  We can keep going:</p>
+
+<p>Fn<sub>2</sub> = Fn<sub>3</sub> + Fn<sub>4</sub>
+Fn = 2Fn<sub>2</sub> + Fn<sub>3</sub>, from above
+Fn = (2Fn<sub>3</sub> + 2Fn<sub>4</sub>) + Fn<sub>3</sub>
+Fn = 3Fn<sub>3</sub> + 2Fn<sub>4</sub>, for n &gt; 3</p>
+
+<p>…and then:</p>
+
+<p>Fn<sub>3</sub> = Fn<sub>4</sub> + Fn<sub>5</sub>
+Fn = (3Fn<sub>4</sub> + 3Fn<sub>5</sub>) + 2Fn<sub>4</sub>
+Fn = 5Fn<sub>4</sub> + 3Fn<sub>5</sub>, for n &gt; 4</p>
+
+<p>…and again:</p>
+
+<p>Fn<sub>4</sub> = Fn<sub>5</sub> + Fn<sub>6</sub>
+Fn = (5Fn<sub>5</sub> + 5Fn<sub>6</sub>) + 3Fn<sub>5</sub>
+Fn = 8Fn<sub>5</sub> + 5Fn<sub>6</sub>, for n &gt; 5</p>
+
+<p>…just one more time:</p>
+
+<p>Fn<sub>5</sub> = Fn<sub>6</sub> + Fn<sub>7</sub>
+Fn = 8Fn<sub>6</sub> + 8Fn<sub>7</sub> + 5Fn<sub>6</sub>
+Fn = 13Fn<sub>6</sub> + 8Fn<sub>7</sub>, for n &gt; 6</p>
+
+<p>See the pattern?  Look at the coefficients:</p>
+
+<p>Fn =  <strong>2</strong>Fn<sub>2</sub> + <strong>1</strong>Fn<sub>3</sub>, for n &gt; <strong>2</strong>
+Fn =  <strong>3</strong>Fn<sub>3</sub> + <strong>2</strong>Fn<sub>4</sub>, for n &gt; <strong>3</strong>
+Fn =  <strong>5</strong>Fn<sub>4</sub> + <strong>3</strong>Fn<sub>5</sub>, for n &gt; <strong>4</strong>
+Fn =  <strong>8</strong>Fn<sub>5</sub> + <strong>5</strong>Fn<sub>6</sub>, for n &gt; <strong>5</strong>
+Fn = <strong>13</strong>Fn<sub>6</sub> + <strong>8</strong>Fn<sub>7</sub>, for n &gt; <strong>6</strong></p>
+
+<p>They’re the Fibonacci sequence starting up.  Do the math, and you’ll see that the next few steps follow along.  What if we replace the coefficients with their Fibonacci indexes?  If F(6) = 8 and F(7) = 13, we can rewrite 13Fn<sub>6</sub> + 8Fn<sub>7</sub> as F(7) Fn<sub>6</sub> + F(6) Fn<sub>7</sub>.  Let’s carry that out:</p>
+
+<p>Fn = F(3) Fn<sub>2</sub> + F(2) Fn<sub>3</sub>, for n &gt; 2
+Fn = F(4) Fn<sub>3</sub> + F(3) Fn<sub>4</sub>, for n &gt; 3
+Fn = F(5) Fn<sub>4</sub> + F(4) Fn<sub>5</sub>, for n &gt; 4
+Fn = F(6) Fn<sub>5</sub> + F(5) Fn<sub>6</sub>, for n &gt; 5
+Fn = F(7) Fn<sub>6</sub> + F(6) Fn<sub>7</sub>, for n &gt; 6</p>
+
+<p>Let’s quickly verify this.  We know from the original definition that F(10) = 55, so let’s see whether these new versions agree.  (I’ll only test the first and last versions, to save space, but you can verify as many as you like.)</p>
+
+<p>F(10) = 55 = F(3) Fn<sub>2</sub> + F(2) Fn<sub>3</sub>
+F(10) = 55 = F(3) F(8) + F(2) F(7)
+F(10) = 55 = 2 * 21 + 1 * 13</p>
+
+<p>F(10) = 55 = F(7) Fn<sub>6</sub> + F(6) Fn<sub>7</sub>
+F(10) = 55 = F(7) F(4) + F(6) F(3)
+F(10) = 55 = 13 * 3 + 8 * 2</p>
+
+<p>They both pass.  More generally:</p>
+
+<p>Fn = F(x) Fn<sub>y</sub> + F(y) Fn<sub>x</sub>, for n &gt; x, and y = x - 1</p>
+
+<p>It’s not terribly wordier than the original definition, Fn = Fn<sub>1</sub> + Fn<sub>2</sub>, for n &gt; 2.</p>
+
+<h4 id="putting-this-to-use">Putting this to use</h4>
+
+<p>A nice property of this new version is that it lets us skip some steps.  If we’re calculating F(1000) with the traditional definition, we have to calculate each Fibonacci along the way; but now, we can set x = 500, and skip down to the neighborhood of F(500):</p>
+
+<p>F(1000) = F(500) * F(501) + F(499) * F(500)</p>
+
+<p>We can continue to skip down to about n/2, decreasing the amount of calculations we need to do.</p>
+
+<p>Just for fun, I implemented both <code class="highlighter-rouge">fib_orig</code> and <code class="highlighter-rouge">fib_new</code> in ruby: <a href="/assets/2008/03/new_fibonacci_tests.rb">here’s the file</a>.  I <a href="http://en.wikipedia.org/wiki/Memoization">memoized</a> the methods, for two reasons:</p>
+<ol>
+<li>It's clearly much faster, and it's simple to do.</li>
+<li>It lets us see exactly which Fibonacci numbers were calculated.</li>
+</ol>
+
+<p>I put the two methods in a test case, with four test methods.</p>
+
+<p>The first test ensures that the new equation matches the old.  Unfortunately, I could only reach 6000 with the <code class="highlighter-rouge">fib_orig</code>, before I ran out of stack space.</p>
+
+<p>The second test benchmarks the two versions.  It reports the memo array size (6000 for <code class="highlighter-rouge">fib_orig</code>, as expected, and 40 for <code class="highlighter-rouge">fib_new</code> – 99.3% fewer calculations).</p>
+
+<p>When <code class="highlighter-rouge">fib_orig</code> ran out of stack space so quickly, I wondered how far I could take the new version (which should recurse many fewer times).  So in the third test, I benchmarked it with progressively bigger numbers.  It starts to slow down around the million<sup>th</sup> Fibonacci number: it completes in about 12 seconds on my machine.  I suspect it’s spending the extra time array-seeking at that point, since the array gets pretty sparse – the last few non-null array indexes are: 125001 249999 250000 250001 499999 500000 500001 1000000.  Maybe I’ll try a hash…</p>
+
+<p>The fourth test is a bit of extra-credit, and a sanity check.  Fn / F(n+1) approaches the <a href="http://en.wikipedia.org/wiki/Golden_ratio">golden ratio</a>, 1.61803398874…, as N approaches infinity.  So I calculated F(1401) / F(1400) with <code class="highlighter-rouge">fib_new</code>, and it’s accurate to 15 decimal points, rounding the last one, which seems to be the limit of precision on my WinXP machine.  I tried using higher Fibonacci numbers, but was warned that I was exceeding the range of ruby’s floating point numbers.  Here’s the output of that test:</p>
+<pre> actual golden ratio: 1.6180339887498948482
+approx. golden ratio: 1.618033988749895
+precision-level test: 0.333333333333333</pre>
+
+<p>So it seems the new approach is correct, faster, uses less space, and is still pretty elegant. Who knows whether this will ever come in handy, but at least it was fun to do.</p>
+
+<p>F(n) = F(x) F(n-y) + F(y) F(n-x), for n &gt; x, and y = x - 1</p>
+
+  </article>
+
+  
+
+  <a id='comments'></a>
+  <h3>8 Comments on "A Faster, Cheaper Fibonacci Definition"</h3>
+
+  
+  <div class='comment'>
+    <div><p>We had a similar discussion a while back here: http://www.mysoftparade.com/blog/ruby-19-doesnt-smoke-python-away/ and we came out with a hash based implementation of Fibonacci in Ruby and Java: here http://pastie.caboo.se/123814 and here http://pastie.caboo.se/123847</p>
+</div>
+
+    
+    <span class='author'>
+      <a href="http://www.akitaonrails.com">AkitaOnRails</a>
+    </span>
+    
+
+    <span class='date'>Sun Mar 23 14:30:50 2008</span>
+  </div>
+  
+  <div class='comment'>
+    <div><p>AkitaOnRails,</p>
+
+<p>Those hash-based implementations use memoization nicely, though from what I saw, they still all use the standard Fibonacci definition.  If you know of anyone who’s seen this other version, I’d love to read more about it.</p>
+
+<p>It’s too bad that in the Python-v-Ruby discussion, no one mentioned that the Python generator generates the Fibs in -ascending- order (a linear, iterative operation), but the others calculate any Fibonacci number (a tree-based recursive operation).  It’s like comparing a weekly allowance to a yearly salary.</p>
+</div>
+
+    
+    <span class='author'>Dan Bernier</span>
+    
+
+    <span class='date'>Mon Mar 24 11:40:33 2008</span>
+  </div>
+  
+  <div class='comment'>
+    <div><p>Update: if you’re interested, you might check this out: http://www.mcs.surrey.ac.uk/Personal/R.Knott/Fibonacci/fibmaths.html</p>
+
+<p>It talks about some similar patterns in the Fibonacci sequence.</p>
+</div>
+
+    
+    <span class='author'>Dan Bernier</span>
+    
+
+    <span class='date'>Sun Mar 30 11:52:59 2008</span>
+  </div>
+  
+  <div class='comment'>
+    <div><p>Or just go to <a href="http://en.wikipedia.org/wiki/Fibonacci_number" rel="nofollow">Wikipedia’s Fibonacci Entry</a> which covers the <a href="http://en.wikipedia.org/wiki/Fibonacci_number#Identity_for_doubling_n" rel="nofollow">identity you found</a> as well as the <a href="http://en.wikipedia.org/wiki/Fibonacci_number#Computation_by_rounding" rel="nofollow">closed form</a>. (If you really <em>need</em> fast fib computation, that would be the choice)</p>
+</div>
+
+    
+    <span class='author'>
+      <a href="http://www.robertblum.com">Robert 'Groby' Blum</a>
+    </span>
+    
+
+    <span class='date'>Fri Apr  4 14:39:10 2008</span>
+  </div>
+  
+  <div class='comment'>
+    <div><p>I think that’s known as the matrix method of computing Fibonacci.  You could avoid most of the computation altogether with fib(n) = (n+1)*n/2 … if I remember correctly, anyway.</p>
+</div>
+
+    
+    <span class='author'>
+      <a href="http://www.codeodor.com">Sammy Larbi</a>
+    </span>
+    
+
+    <span class='date'>Fri Apr  4 15:27:37 2008</span>
+  </div>
+  
+  <div class='comment'>
+    <div><p>Excellent that you derived it, by the way!</p>
+</div>
+
+    
+    <span class='author'>
+      <a href="http://www.codeodor.com">Sammy Larbi</a>
+    </span>
+    
+
+    <span class='date'>Fri Apr  4 15:29:03 2008</span>
+  </div>
+  
+  <div class='comment'>
+    <div><p>Robert and Sammy, thank you!  I knew this had to be old news.  Maybe I should’ve read the Wikipedia page, instead of goofing with all those substitutions.  :-)</p>
+
+<p>I love the point made there that performance is more influenced by your platform’s handling of really long numbers, since the Fibs get so big so fast.</p>
+</div>
+
+    
+    <span class='author'>Dan Bernier</span>
+    
+
+    <span class='date'>Fri Apr  4 16:45:11 2008</span>
+  </div>
+  
+  <div class='comment'>
+    <div><p>[…] fact I’ve been busy explains the silence on my blog. But here, in the spirit of A Faster Fibonacci here is a quick Haskell version. I will leave the explanation for the other blog post. Basically […]</p>
+</div>
+
+    
+    <span class='author'>
+      <a href="http://cpoucet.wordpress.com/2008/04/07/update/">Update « lambda.oasis :: cpoucet -> content</a>
+    </span>
+    
+
+    <span class='date'>Fri Mar 13 17:27:56 2009</span>
+  </div>
+  
+
+  
+</div>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col  footer-col-1">
+        <h2 class="footer-heading">Invisible Blocks</h2>
+        <p class="text">for building invisible machines</p>
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/danbernier">
+              <span class="icon  icon--github">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/>
+                </svg>
+              </span>
+
+              <span class="username">danbernier</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/danbernier">
+              <span class="icon  icon--twitter">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809
+                  c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/>
+                </svg>
+              </span>
+
+              <span class="username">danbernier</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col  footer-col-3">
+        <p class="text">I make <a href='http://wordcram.org'>WordCram</a>, and try to make generative art in <a href='http://processing.org'>Processing</a>. I read a fair bit, and I try to write well. I co-organize <a href='http://newhaven.io'>NewHaven.IO</a> and <a href='http://newhavenrb.org'>NewHaven.rb</a>. This is my blog.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
